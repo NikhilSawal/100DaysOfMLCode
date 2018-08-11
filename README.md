@@ -9,7 +9,7 @@ Because machine learning uses statistical techniques to give computers the abili
 
 ![](Images/Day_1.png)  
 
-## Day 2 | [R Data types and Data structure (Vectors)]()  
+## Day 2 | [R Data types and Data structure (Vectors)](https://github.com/NikhilSawal/100DaysOfMLCode/tree/master/Data%20types%20and%20data%20structures%20in%20r)  
 
 On day 2, I have covered the basic data types and the data structure, vector (one dimensional arrays in other programming languages) in R.
 Exploring and understanding the basics is really important, before we move to the more advanced machine learning applications. Plus it would be a good reference. 
