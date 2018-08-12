@@ -1,0 +1,195 @@
+---
+title: "R Data types and Data structures"
+author: "Nikhil Sawal"
+date: "August 11, 2018"
+output:
+  html_document: default
+  pdf_document: default
+---
+
+# 1. Data Types
+
+### 1.1 Numberic [floating point values]
+```{r}
+a <- 2.2
+```
+### 1.2 Integer
+```{r}
+b <- 2
+```
+
+### 1.3 Logical [True/False]
+```{r}
+c <- TRUE
+```
+
+### 1.4 Characters [String]
+##### Can use single or double quotes ["" / ""]
+```{r}
+d <- "Hello World!"
+```  
+
+
+# 2. Function class() - Checks Datatype
+```{r}
+class(a)
+class(b)
+class(c)
+class(d)
+```
+**NOTE:** `b`, inspite of being an interger is stored as numeric, because all integers are stored as numeric
+
+# 3. Vector
+A vector is a one-dimensional array, that can hold character, logical or numeric data. 
+We use the combine funtion to create a vector.
+
+### 3.1 Numeric Vector
+```{r}
+num <- c(1,2,3,4,5)                # c() represents the combine function
+
+class(num)
+```
+Since every element in the above vector is numeric the class of `num` is "numeric".  
+
+### 3.2 Character and Boolean vector
+```{r}
+char <- c("x", "y", "z")
+class(char)
+
+bool <- c(T, F)
+class(bool)
+```  
+
+Key Points about vectors  
+
+* All elements within a vector should be of the **SAME DATA TYPE**
+* If the elements belong to some other data type, R will convert their class. This 
+  particular situation is referred to as coercion
+```{r}
+f <- c(TRUE, 1, 4, 5)
+print(f)
+```
+Since the other elements in the vector f are numeric, TRUE is converted to numeric  
+
+* True is converted to 1
+* False is converted to 0  
+
+Now,if we check the class of the vector `f`, it should be numeric.
+```{r}
+class(f)
+```
+
+
+Another example
+```{r}
+g <- c("afd", 1, 3, 6)
+print(g)
+class(g)
+```
+In case of the vector `g`, it is not possible to convert the character "afd" to a 
+numeric type, so the other elements are converted to a character data type
+
+### 3.3 Assign names to vector elements using **names()** function
+```{r}
+temp <- c(32,33,36,42,37,41,33)
+names(temp) <- c("Mon", "Tue", "Wed", "Thurs", "Fri", "Sat", "Sun")
+print(temp)
+```
+To make the above code reusable, assign the vector of days to a variable `days`. This would spare a lot of time for productive more work. 
+```{r}
+days <- c("Mon", "Tue", "Wed", "Thurs", "Fri", "Sat", "Sun")
+names(temp) <- days
+print(temp)
+```
+# 4. Vector Operations
+### 4.1 Elementwise operations.
+```{r}
+v1 <- c(1,2,3)
+v2 <- c(3,4,5)
+```
+### 4.2 Elementwise Addition
+```{r}
+print(v1 + v2)
+```
+### 4.3 Elementwise Subtraction
+```{r}
+print(v1 - v2)
+```
+### 4.4 Elementwise Division
+```{r}
+print(v1 / v2)
+```
+### 4.4 Elementwise Multiplication
+```{r}
+print(v1 * v2)
+```
+
+### 4.5 Vector built-in functions
+```{r}
+sum(v1)              # Returns Sum
+mean(v2)             # Returns Mean
+sd(v1)               # Returns Standard Deviation
+max(v2)              # Returns Maximum
+min(v1)              # Returns Minimum
+prod(v2)             # Returns Product
+length(v1)           # Returns Length
+```
+
+# 5. Indexing vector and slicing
+```{r}
+v1 <- c(1,2,3,4,6)
+v2 <- c('a','b','c','d','e')
+```
+
+Indexing in R starts at `1`, unlike other programming languages, where it starts at `0`
+
+### 5.1 Index a single element
+```{r}
+v1[1]
+```
+
+### 5.2 To grab the first and second element
+```{r}
+v1[c(1,2)]
+v1[1:2]
+```
+
+### 5.3 To get elements in continuous sequence
+```{r}
+v1[3:5]
+```
+
+### 5.4 Indexing using names
+```{r}
+v <- c(1,2,3,4)
+names(v) <- c('w', 'x', 'y', 'z')
+
+v[2]
+v['x']
+v[c('x','y','z')]
+```
+
+### 5.5 Indexing or filtering by comparison or using logical statements
+
+#### 5.5.1 Index all elements greater than 2
+```{r}
+print(v[v>2])
+print(v>2)
+```
+Notice the difference b/w the above two statements
+
+#### 5.5.2 Comparison operators - Evaluates True/False
+```{r}
+3 > 4
+2 < 9
+5 >= 5
+2 <= 4
+2 == 6
+2 !=2
+```
+**Note:** that `'='` is an assignment operator and **CANNOT** be used for comparison
+So, using `'='` for comparison will throw an error.
+
+
+
+
