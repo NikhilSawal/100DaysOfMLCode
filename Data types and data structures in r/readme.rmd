@@ -190,6 +190,177 @@ Notice the difference b/w the above two statements
 **Note:** that `'='` is an assignment operator and **CANNOT** be used for comparison
 So, using `'='` for comparison will throw an error.
 
+# 6. Matrix
+A matrix is a 2-dimensional data structure which consists of elements of the same data type 
+
+### 6.1 Create Matrix with `matrix()` function
+```{r}
+vec <- 1:10
+matrix(vec)
+```
+This will create a matrix of 10 rows and 1 column, which is the default setting.
+
+### 6.2 To specify the number of rows or columns, use the `nrow()` or `ncol()` argument respectively.
+
+```{r}
+matrix(vec, nrow = 2)
+```
+
+The default for filling the elements in a matrix is by columns. To change it to rows,
+set the `byrow` argument to `TRUE`
+```{r}
+matrix(1:12, byrow = T, nrow = 4)
+matrix(1:12, byrow = F, nrow = 4)
+```
+**Notice:** the difference. In the first matrix the elements are filled by rows since we set the `byrow` argument to `TRUE`. In the second matrix, the elements are filled by columns.
+
+Let's do an example of creating a matrix, for the prices of apples and oranges for
+weekdays. We start with creating 2 vectors `apples and oranges` and the elements of each vector, would be their prices for that respective weekdays.
+```{r}
+apples <- c(12, 11, 10, 9, 14)
+oranges <- c(6, 9, 7, 11, 8)
+```
+
+
+Using the combine function `c()`, will create a vector
+```{r}
+prices <- c(apples, oranges)
+prices
+```
+
+In order to create a matix, we perform the following operations.
+
+```{r}
+prices.matrix <- matrix(prices, byrow = T, nrow = 2)
+print(prices.matrix)
+```
+
+Now, we can use the `colnames()` and `rownames()` function to give names to the columns and rows respectively.
+
+```{r}
+days <- c("Mon", "Tue", "Wed", "Thur", "Fri")
+fruits <- c("Apples", "Oranges")
+
+colnames(prices.matrix) <- days
+rownames(prices.matrix) <- fruits
+
+print(prices.matrix)
+```
+
+# 7. Matrix Arithmetic
+We first create a matrix, `mat`.
+```{r}
+mat <- matrix(1:25, byrow = T, nrow = 5)
+```
+
+### 7.1 Matrix operations [ELEMENTWISE]
+#### 7.1.1 Multiply all the elements by 2
+
+```{r}
+mat*2
+```
+
+#### 7.1.2 Divide all elements by 2
+
+```{r}
+mat/2
+```
+
+#### 7.1.3 Power - Square all elements in the matrix
+
+```{r}
+mat^2
+```
+
+#### 7.1.4 Using the comparison operator will return a matrix of logical values.
+```{r}
+mat > 14
+``` 
+#### 7.1.5 For filtering 
+
+```{r}
+mat[mat > 15]
+```
+
+This will return a vector of all the elements > 15 in the matrix `mat`
+
+
+#### 7.1.6 Matrix summation [ELEMENTWISE]
+
+```{r}
+mat + mat
+```
+
+You can perform other operations like multiplication, subtraction, division.
+
+#### 7.1.7 Matrix multiplication
+
+```{r}
+mat %*% mat
+```
+**This is not an element by element multiplication.**
+
+### 7.2 Matrix operations [MATRIX FUNCTIONS]
+#### 7.2.1 Sums
+```{r}
+colSums(prices.matrix)
+rowSums(prices.matrix)
+```
+
+#### 7.2.2 Means
+```{r}
+rowMeans(prices.matrix)
+colMeans(prices.matrix)
+```
+
+#### 7.2.3 `cbind()` and `rbind()` function to add columns and rows to an existing matrix
+Let's use the fruit price example to see the application
+
+```{r}
+Grapes <- c(13, 14, 11, 10, 10)
+fruit.prices <- rbind(prices.matrix, Grapes)
+print(fruit.prices)
+```
+
+We can add a row that shows the weekly average price of the fruits
+
+```{r}
+avg <- rowMeans(fruit.prices)
+prices.matrix <- cbind(fruit.prices, avg)
+prices.matrix
+```
+
+
+# 8. Matrix Indexing
+We start by creating a new matrix `mat`.
+```{r}
+mat <- matrix(1:20, byrow = T, nrow = 5)
+mat
+```
+
+### 8.1 Index first row and all columns. Returns a vector
+
+```{r}
+mat[1,]
+```
+
+### 8.2 Just the Second column
+
+```{r}
+mat[,2]
+```
+
+### 8.3 First two rows and all columns
+
+```{r}
+mat[1:2,]
+```
+
+### 8.4 Last 2 rows and first 2 columns
+
+```{r}
+mat[4:5,1:2]
+```
 
 
 

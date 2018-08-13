@@ -135,6 +135,107 @@ print(v>2)
 print(2 = 4)
 
 
+# Matrix
+# A matrix is a 2-dimensional data structure which consists of elements of the same 
+# data type 
+
+### Create Matrix with `matrix()` function
+vec <- 1:10
+matrix(vec)
+# This will create a matrix of 10 rows and 1 column
+
+#### To specify the number of rows or columns, use the nrow() or ncol() argument
+#### respectively.
+matrix(vec, nrow = 2)
+
+# The default for filling the elements in a matrix is by columns. To change it to rows,
+# set the `byrow` argument to`TRUE`
+matrix(1:12, byrow = T, nrow = 4)
+matrix(1:12, byrow = F, nrow = 4)
+# Notice the difference
+
+# Let's do an example of creating a matrix, for the prices of apples and oranges for
+# weekdays
+apples <- c(12, 11, 10, 9, 14)
+oranges <- c(6, 9, 7, 11, 8)
+
+### Using the combine function c(), will create a vector
+prices <- c(apples, oranges)
+
+# In order to create a matix, perform the following operations.
+prices.matrix <- matrix(prices, byrow = T, nrow = 2)
+print(prices.matrix)
+
+# Now, we can use the colnames() and rownames() function to give names to the columns and
+# rows respectively.
+days <- c("Mon", "Tue", "Wed", "Thur", "Fri")
+fruits <- c("Apples", "Oranges")
+
+colnames(prices.matrix) <- days
+rownames(prices.matrix) <- fruits
+
+print(prices.matrix)
+
+# Matrix Arithmetic
+mat <- matrix(1:25, byrow = T, nrow = 5)
+
+### Matrix operations [ELEMENTWISE]
+#### Multiply all the elements by 2
+mat*2
+
+#### Divide all elements by 2
+mat/2
+
+#### Power - Square all elements in the matrix
+mat^2
+
+### Using the comparison operator will return a matrix of logical values.
+mat > 14
+ 
+# for filtering 
+mat[mat > 15]
+# this will return a vector of all the elements > 15 in the `mat`
 
 
 
+#### Matrix summation [ELEMENTWISE]
+mat + mat
+# You can perform other operations like [multiplication, subtraction, division]
+
+### Matrix multiplication
+mat %*% mat
+
+### Matrix operations [MATRIX FUNCTIONS]
+#### Sums
+colSums(prices.matrix)
+rowSums(prices.matrix)
+
+#### Means
+rowMeans(prices.matrix)
+colMeans(prices.matrix)
+
+### `cbind()` and `rbind()` function to add columns and rows to an existing matrix
+# Let's use the fruit price example to see the application
+Grapes <- c(13, 14, 11, 10, 10)
+fruit.prices <- rbind(prices.matrix, Grapes)
+print(fruit.prices)
+
+# We can add a row that shows the weekly average price of the fruits
+avg <- rowMeans(fruit.prices)
+prices.matrix <- cbind(fruit.prices, avg)
+
+
+# Matrix Indexing
+mat <- matrix(1:20, byrow = T, nrow = 5)
+mat
+#### First row and all columns. Returns a vector
+mat[1,]
+
+#### Just the Second column
+mat[,2]
+
+#### First two rows and all columns
+mat[1:2,]
+
+#### Last 2 wows and first 2 columns
+mat[4:5,1:2]
