@@ -34,3 +34,13 @@ For day 4, I added the syntax for data frames, which is what we would be dealing
 * Dealing with NA's  
 
 All of the above mentioned operations are important from Exploratory data analysis stand point. 
+
+## Day 5 | ML model considerations  
+  
+On Day 1, we saw what is statistical learning, what is the difference between inference and prediction and we also understood why to estimate f-hat. Today I decided to continue that topic further and answer:  
+* How to estimate f?
+* How is flexibility related to preduction accuracy and model interpretability?
+* What is bias-variance trade-off?
+* How to assess model accuracy?  
+
+![](Images/Day_5.png) 
