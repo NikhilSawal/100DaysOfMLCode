@@ -38,8 +38,8 @@ All of the above mentioned operations are important from Exploratory data analys
 ## Day 5 | ML model considerations  
   
 On Day 1, we saw what is statistical learning, what is the difference between inference and prediction and we also understood why to estimate f-hat. Today I decided to continue that topic further and answer:  
-* How to estimate f?
-* How is flexibility related to preduction accuracy and model interpretability?
+* How to estimate *f* ?
+* How is flexibility related to prediction accuracy and model interpretability?
 * What is bias-variance trade-off?
 * How to assess model accuracy?  
 
