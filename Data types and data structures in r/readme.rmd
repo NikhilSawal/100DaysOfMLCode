@@ -421,7 +421,8 @@ The structure and summary of the data frame `df` is.
 str(df)
 summary(df)
 ```
-This is important during exploratory data analysis.
+This is important during exploratory data analysis.  
+
 ### 9.4 Indexing and Sorting data frames
 #### 9.4.1 Index the first row of `df`
 ```{r}
