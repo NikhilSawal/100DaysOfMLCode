@@ -239,3 +239,149 @@ mat[1:2,]
 
 #### Last 2 wows and first 2 columns
 mat[4:5,1:2]
+
+# Data Frames
+# Data frames enable us to organize and mix data types to create powerful data structures,
+# unlike vectors and matrices where all the elements should be of the same data type.
+# Data frames can be thought of as an Excel spreadsheet.
+
+### Few build-in data frames in R
+state.x77
+USPersonalExpenditure
+women
+
+#### To see all the built-in data sets use
+data()
+
+### Data frame functions
+#### Top 5 rows
+head(state.x77)
+#### Bottom 5 rows
+tail(state.x77)
+#### Structure of the data frame
+str(state.x77)
+#### Summary of Statistical Data
+summary(state.x77)
+
+### Create Data frames - Use the data.frame()
+days <- c('Mon', 'Tue', 'Wed', 'Thur', 'Fri')
+temp <- c(21.0, 25.1, 22.9, 26.6, 19.5)
+rain <- c(T, T, F, F, F)
+
+df <- data.frame(Days = days, Temperature = temp, Rain = rain)
+#OR
+df <- data.frame(days, temp, rain)
+
+str(df)
+summary(df)
+
+### Indexing data frames
+#### Index the first row of df
+df[1,]
+#### Index the first column of df
+df[,1]
+# OR
+df$days         #This method returns a vector
+#OR
+df['days']      #This method returns a data frame
+
+# Instead of putting the index of the columns, we can use the names of the columns
+df[1:3, c('days','temp')]
+
+#### subset() function is a conditional subset
+subset(df, subset = rain == T)
+subset(df, subset = temp <= 22)
+# The output is in data frame format
+
+#### orderI() function
+sorted.temp <- order(df['temp'])
+sorted.temp
+# This will sort the data frame as per temperature. The default is ascending
+
+#### To sort the data frame
+df[sorted.temp,]
+
+#### To sort in descending order
+desc.temp <- order(-df['temp'])
+df[desc.temp,]
+#OR
+desc.temp <- order(-df$temp)
+df[desc.temp,]
+
+### To find the number of rows and number of columns use nrow() and ncol()
+nrow(df)
+ncol(df)
+
+### To get the rownames and column names use rownames() and colnames() function
+colnames(df)
+rownames(df)
+
+### Reference a cell in data frame
+df[[1,2]]
+#OR
+df[[1,'temp']]
+
+### Assigning cells a value
+df[[1,'temp']] <- 48
+df
+
+### Reference a row
+df[3,]
+
+
+### Reference a column
+df <- mtcars
+### Return Vector
+#### Method 1
+df$mpg
+
+#### Method 2
+df[,'mpg']
+
+#### Method 3
+df[,1]
+ 
+#### Method 4
+df[['mpg']]
+
+### Return a data frame
+df['mpg']
+#or
+df[1]
+
+
+#### Return multiple columns
+head(df[c('mpg', 'cyl')])
+
+# to add rows and columns use the rbind() and cbind() functions
+# to add a new column you can use df$colName <- 2*previous columns
+
+# rename columns
+# colnames(df) <- c("a","b","c","d","e","f")
+
+# To rename a specific columns
+# colnames(df)[1] <- "New_col"
+
+### Filtering rows as per condition
+mtcars[mtcars$mpg > 20, ]
+
+### Filtering with multiple conditions
+mtcars[(mtcars$mpg > 20) & (mtcars$cyl == 6),]
+
+### subset() function for filtering
+subset(mtcars, mpg > 20 & cyl == 6)
+
+### Dealing with NA's
+is.na(mtcars)
+# the above function will return a data frame of logicals: TRUE if missing, FALSE O/W
+
+any(is.na(mtcars))
+# this will return a single logical value, False if no data is misssing and True if 
+# atleast one data cell has missing values.
+
+
+# To replace NA's in your entire data set use
+df[is.na(df)] <- 0
+
+# To replace missing values in a specific column with the mean you can do:
+mtcars$mpg[is.na(mtcars$mpg)] <- mean(mtcars$mpg)

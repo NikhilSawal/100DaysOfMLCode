@@ -551,6 +551,589 @@ mat</code></pre>
 ## [2,]   17   18</code></pre>
 </div>
 </div>
+<div id="data-frames" class="section level1">
+<h1>9. Data Frames</h1>
+<p>Data frames enable us to organize and mix data types to create powerful data structures, unlike vectors and matrices where all the elements should be of the same data type. Data frames can be thought of as an Excel spreadsheet.</p>
+<div id="few-build-in-data-frames-in-r" class="section level3">
+<h3>9.1 Few build-in data frames in R</h3>
+<pre class="r"><code>state.x77</code></pre>
+<pre><code>##                Population Income Illiteracy Life Exp Murder HS Grad Frost
+## Alabama              3615   3624        2.1    69.05   15.1    41.3    20
+## Alaska                365   6315        1.5    69.31   11.3    66.7   152
+## Arizona              2212   4530        1.8    70.55    7.8    58.1    15
+## Arkansas             2110   3378        1.9    70.66   10.1    39.9    65
+## California          21198   5114        1.1    71.71   10.3    62.6    20
+## Colorado             2541   4884        0.7    72.06    6.8    63.9   166
+## Connecticut          3100   5348        1.1    72.48    3.1    56.0   139
+## Delaware              579   4809        0.9    70.06    6.2    54.6   103
+## Florida              8277   4815        1.3    70.66   10.7    52.6    11
+## Georgia              4931   4091        2.0    68.54   13.9    40.6    60
+## Hawaii                868   4963        1.9    73.60    6.2    61.9     0
+## Idaho                 813   4119        0.6    71.87    5.3    59.5   126
+## Illinois            11197   5107        0.9    70.14   10.3    52.6   127
+## Indiana              5313   4458        0.7    70.88    7.1    52.9   122
+## Iowa                 2861   4628        0.5    72.56    2.3    59.0   140
+## Kansas               2280   4669        0.6    72.58    4.5    59.9   114
+## Kentucky             3387   3712        1.6    70.10   10.6    38.5    95
+## Louisiana            3806   3545        2.8    68.76   13.2    42.2    12
+## Maine                1058   3694        0.7    70.39    2.7    54.7   161
+## Maryland             4122   5299        0.9    70.22    8.5    52.3   101
+## Massachusetts        5814   4755        1.1    71.83    3.3    58.5   103
+## Michigan             9111   4751        0.9    70.63   11.1    52.8   125
+## Minnesota            3921   4675        0.6    72.96    2.3    57.6   160
+## Mississippi          2341   3098        2.4    68.09   12.5    41.0    50
+## Missouri             4767   4254        0.8    70.69    9.3    48.8   108
+## Montana               746   4347        0.6    70.56    5.0    59.2   155
+## Nebraska             1544   4508        0.6    72.60    2.9    59.3   139
+## Nevada                590   5149        0.5    69.03   11.5    65.2   188
+## New Hampshire         812   4281        0.7    71.23    3.3    57.6   174
+## New Jersey           7333   5237        1.1    70.93    5.2    52.5   115
+## New Mexico           1144   3601        2.2    70.32    9.7    55.2   120
+## New York            18076   4903        1.4    70.55   10.9    52.7    82
+## North Carolina       5441   3875        1.8    69.21   11.1    38.5    80
+## North Dakota          637   5087        0.8    72.78    1.4    50.3   186
+## Ohio                10735   4561        0.8    70.82    7.4    53.2   124
+## Oklahoma             2715   3983        1.1    71.42    6.4    51.6    82
+## Oregon               2284   4660        0.6    72.13    4.2    60.0    44
+## Pennsylvania        11860   4449        1.0    70.43    6.1    50.2   126
+## Rhode Island          931   4558        1.3    71.90    2.4    46.4   127
+## South Carolina       2816   3635        2.3    67.96   11.6    37.8    65
+## South Dakota          681   4167        0.5    72.08    1.7    53.3   172
+## Tennessee            4173   3821        1.7    70.11   11.0    41.8    70
+## Texas               12237   4188        2.2    70.90   12.2    47.4    35
+## Utah                 1203   4022        0.6    72.90    4.5    67.3   137
+## Vermont               472   3907        0.6    71.64    5.5    57.1   168
+## Virginia             4981   4701        1.4    70.08    9.5    47.8    85
+## Washington           3559   4864        0.6    71.72    4.3    63.5    32
+## West Virginia        1799   3617        1.4    69.48    6.7    41.6   100
+## Wisconsin            4589   4468        0.7    72.48    3.0    54.5   149
+## Wyoming               376   4566        0.6    70.29    6.9    62.9   173
+##                  Area
+## Alabama         50708
+## Alaska         566432
+## Arizona        113417
+## Arkansas        51945
+## California     156361
+## Colorado       103766
+## Connecticut      4862
+## Delaware         1982
+## Florida         54090
+## Georgia         58073
+## Hawaii           6425
+## Idaho           82677
+## Illinois        55748
+## Indiana         36097
+## Iowa            55941
+## Kansas          81787
+## Kentucky        39650
+## Louisiana       44930
+## Maine           30920
+## Maryland         9891
+## Massachusetts    7826
+## Michigan        56817
+## Minnesota       79289
+## Mississippi     47296
+## Missouri        68995
+## Montana        145587
+## Nebraska        76483
+## Nevada         109889
+## New Hampshire    9027
+## New Jersey       7521
+## New Mexico     121412
+## New York        47831
+## North Carolina  48798
+## North Dakota    69273
+## Ohio            40975
+## Oklahoma        68782
+## Oregon          96184
+## Pennsylvania    44966
+## Rhode Island     1049
+## South Carolina  30225
+## South Dakota    75955
+## Tennessee       41328
+## Texas          262134
+## Utah            82096
+## Vermont          9267
+## Virginia        39780
+## Washington      66570
+## West Virginia   24070
+## Wisconsin       54464
+## Wyoming         97203</code></pre>
+<pre class="r"><code>USPersonalExpenditure</code></pre>
+<pre><code>##                       1940   1945  1950 1955  1960
+## Food and Tobacco    22.200 44.500 59.60 73.2 86.80
+## Household Operation 10.500 15.500 29.00 36.5 46.20
+## Medical and Health   3.530  5.760  9.71 14.0 21.10
+## Personal Care        1.040  1.980  2.45  3.4  5.40
+## Private Education    0.341  0.974  1.80  2.6  3.64</code></pre>
+<pre class="r"><code>women</code></pre>
+<pre><code>##    height weight
+## 1      58    115
+## 2      59    117
+## 3      60    120
+## 4      61    123
+## 5      62    126
+## 6      63    129
+## 7      64    132
+## 8      65    135
+## 9      66    139
+## 10     67    142
+## 11     68    146
+## 12     69    150
+## 13     70    154
+## 14     71    159
+## 15     72    164</code></pre>
+<p>To see all the built-in data sets use</p>
+<pre class="r"><code>data()</code></pre>
+</div>
+<div id="data-frame-functions" class="section level3">
+<h3>9.2 Data frame functions</h3>
+<div id="top-5-rows" class="section level4">
+<h4>9.2.1 Top 5 rows</h4>
+<pre class="r"><code>head(state.x77)</code></pre>
+<pre><code>##            Population Income Illiteracy Life Exp Murder HS Grad Frost
+## Alabama          3615   3624        2.1    69.05   15.1    41.3    20
+## Alaska            365   6315        1.5    69.31   11.3    66.7   152
+## Arizona          2212   4530        1.8    70.55    7.8    58.1    15
+## Arkansas         2110   3378        1.9    70.66   10.1    39.9    65
+## California      21198   5114        1.1    71.71   10.3    62.6    20
+## Colorado         2541   4884        0.7    72.06    6.8    63.9   166
+##              Area
+## Alabama     50708
+## Alaska     566432
+## Arizona    113417
+## Arkansas    51945
+## California 156361
+## Colorado   103766</code></pre>
+</div>
+<div id="bottom-5-rows" class="section level4">
+<h4>9.2.2 Bottom 5 rows</h4>
+<pre class="r"><code>tail(state.x77)</code></pre>
+<pre><code>##               Population Income Illiteracy Life Exp Murder HS Grad Frost
+## Vermont              472   3907        0.6    71.64    5.5    57.1   168
+## Virginia            4981   4701        1.4    70.08    9.5    47.8    85
+## Washington          3559   4864        0.6    71.72    4.3    63.5    32
+## West Virginia       1799   3617        1.4    69.48    6.7    41.6   100
+## Wisconsin           4589   4468        0.7    72.48    3.0    54.5   149
+## Wyoming              376   4566        0.6    70.29    6.9    62.9   173
+##                Area
+## Vermont        9267
+## Virginia      39780
+## Washington    66570
+## West Virginia 24070
+## Wisconsin     54464
+## Wyoming       97203</code></pre>
+</div>
+<div id="structure-of-the-data-frame" class="section level4">
+<h4>9.2.3 Structure of the data frame</h4>
+<pre class="r"><code>str(state.x77)</code></pre>
+<pre><code>##  num [1:50, 1:8] 3615 365 2212 2110 21198 ...
+##  - attr(*, &quot;dimnames&quot;)=List of 2
+##   ..$ : chr [1:50] &quot;Alabama&quot; &quot;Alaska&quot; &quot;Arizona&quot; &quot;Arkansas&quot; ...
+##   ..$ : chr [1:8] &quot;Population&quot; &quot;Income&quot; &quot;Illiteracy&quot; &quot;Life Exp&quot; ...</code></pre>
+</div>
+<div id="summary-of-statistical-data" class="section level4">
+<h4>9.2.4 Summary of Statistical Data</h4>
+<pre class="r"><code>summary(state.x77)</code></pre>
+<pre><code>##    Population        Income       Illiteracy       Life Exp    
+##  Min.   :  365   Min.   :3098   Min.   :0.500   Min.   :67.96  
+##  1st Qu.: 1080   1st Qu.:3993   1st Qu.:0.625   1st Qu.:70.12  
+##  Median : 2838   Median :4519   Median :0.950   Median :70.67  
+##  Mean   : 4246   Mean   :4436   Mean   :1.170   Mean   :70.88  
+##  3rd Qu.: 4968   3rd Qu.:4814   3rd Qu.:1.575   3rd Qu.:71.89  
+##  Max.   :21198   Max.   :6315   Max.   :2.800   Max.   :73.60  
+##      Murder          HS Grad          Frost             Area       
+##  Min.   : 1.400   Min.   :37.80   Min.   :  0.00   Min.   :  1049  
+##  1st Qu.: 4.350   1st Qu.:48.05   1st Qu.: 66.25   1st Qu.: 36985  
+##  Median : 6.850   Median :53.25   Median :114.50   Median : 54277  
+##  Mean   : 7.378   Mean   :53.11   Mean   :104.46   Mean   : 70736  
+##  3rd Qu.:10.675   3rd Qu.:59.15   3rd Qu.:139.75   3rd Qu.: 81163  
+##  Max.   :15.100   Max.   :67.30   Max.   :188.00   Max.   :566432</code></pre>
+</div>
+</div>
+<div id="create-data-frames---use-the-data.frame" class="section level3">
+<h3>9.3 Create Data frames - Use the data.frame()</h3>
+<pre class="r"><code>days &lt;- c('M','T','W','Th','F')
+temp &lt;- c(5,3,6,3,7)
+rain &lt;- c(T,F,F,T,F)
+
+df &lt;- data.frame(Days=days, Temperature=temp, Rain=rain)
+df</code></pre>
+<pre><code>##   Days Temperature  Rain
+## 1    M           5  TRUE
+## 2    T           3 FALSE
+## 3    W           6 FALSE
+## 4   Th           3  TRUE
+## 5    F           7 FALSE</code></pre>
+<p><strong>OR</strong> You can directly use the names of the vectors and they would be used as column names by default.</p>
+<pre class="r"><code>df &lt;- data.frame(days, temp, rain)
+df</code></pre>
+<pre><code>##   days temp  rain
+## 1    M    5  TRUE
+## 2    T    3 FALSE
+## 3    W    6 FALSE
+## 4   Th    3  TRUE
+## 5    F    7 FALSE</code></pre>
+<p>The structure and summary of the data frame <code>df</code> is.</p>
+<pre class="r"><code>str(df)</code></pre>
+<pre><code>## 'data.frame':    5 obs. of  3 variables:
+##  $ days: Factor w/ 5 levels &quot;F&quot;,&quot;M&quot;,&quot;T&quot;,&quot;Th&quot;,..: 2 3 5 4 1
+##  $ temp: num  5 3 6 3 7
+##  $ rain: logi  TRUE FALSE FALSE TRUE FALSE</code></pre>
+<pre class="r"><code>summary(df)</code></pre>
+<pre><code>##  days        temp        rain        
+##  F :1   Min.   :3.0   Mode :logical  
+##  M :1   1st Qu.:3.0   FALSE:3        
+##  T :1   Median :5.0   TRUE :2        
+##  Th:1   Mean   :4.8                  
+##  W :1   3rd Qu.:6.0                  
+##         Max.   :7.0</code></pre>
+<p>This is important during exploratory data analysis. ### 9.4 Indexing and Sorting data frames #### 9.4.1 Index the first row of <code>df</code></p>
+<pre class="r"><code>df[1,]</code></pre>
+<pre><code>##   days temp rain
+## 1    M    5 TRUE</code></pre>
+<div id="index-the-first-column-of-df" class="section level4">
+<h4>9.4.2 Index the first column of <code>df</code></h4>
+<pre class="r"><code>df[,1]</code></pre>
+<pre><code>## [1] M  T  W  Th F 
+## Levels: F M T Th W</code></pre>
+<p><strong>OR</strong></p>
+<pre class="r"><code>df$days         #This method returns a vector</code></pre>
+<pre><code>## [1] M  T  W  Th F 
+## Levels: F M T Th W</code></pre>
+<p><strong>OR</strong></p>
+<pre class="r"><code>df['days']      #This method returns a data frame</code></pre>
+<pre><code>##   days
+## 1    M
+## 2    T
+## 3    W
+## 4   Th
+## 5    F</code></pre>
+<p>Instead of putting the index of the columns, we can use the names of the columns</p>
+<pre class="r"><code>df[1:3, c('days','temp')]</code></pre>
+<pre><code>##   days temp
+## 1    M    5
+## 2    T    3
+## 3    W    6</code></pre>
+</div>
+<div id="subset-function-for-doing-a-conditional-subset" class="section level4">
+<h4>9.4.3 <code>subset()</code> function for doing a conditional subset</h4>
+<p>Subset all rows where <code>rain == TRUE</code></p>
+<pre class="r"><code>subset(df, subset = rain == T)</code></pre>
+<pre><code>##   days temp rain
+## 1    M    5 TRUE
+## 4   Th    3 TRUE</code></pre>
+<p>Subset all rows where <code>temp &lt;= 22</code></p>
+<pre class="r"><code>subset(df, subset = temp &lt;= 22)</code></pre>
+<pre><code>##   days temp  rain
+## 1    M    5  TRUE
+## 2    T    3 FALSE
+## 3    W    6 FALSE
+## 4   Th    3  TRUE
+## 5    F    7 FALSE</code></pre>
+<p>The outputs are in data frame format.</p>
+</div>
+<div id="order-function" class="section level4">
+<h4>9.4.4 <code>order()</code> function</h4>
+<pre class="r"><code>sorted.temp &lt;- order(df['temp'])
+sorted.temp</code></pre>
+<pre><code>## [1] 2 4 1 3 5</code></pre>
+<p>This will output a vector of sorted temperature indexes. The default is ascending. We can use these indexes to sort the data frame.</p>
+<pre class="r"><code>df[sorted.temp,]</code></pre>
+<pre><code>##   days temp  rain
+## 2    T    3 FALSE
+## 4   Th    3  TRUE
+## 1    M    5  TRUE
+## 3    W    6 FALSE
+## 5    F    7 FALSE</code></pre>
+<p>To sort in descending order</p>
+<pre class="r"><code>desc.temp &lt;- order(-df['temp'])
+df[desc.temp,]</code></pre>
+<pre><code>##   days temp  rain
+## 5    F    7 FALSE
+## 3    W    6 FALSE
+## 1    M    5  TRUE
+## 2    T    3 FALSE
+## 4   Th    3  TRUE</code></pre>
+<p><strong>OR</strong></p>
+<pre class="r"><code>desc.temp &lt;- order(-df$temp)
+df[desc.temp,]</code></pre>
+<pre><code>##   days temp  rain
+## 5    F    7 FALSE
+## 3    W    6 FALSE
+## 1    M    5  TRUE
+## 2    T    3 FALSE
+## 4   Th    3  TRUE</code></pre>
+<p>To find the number of rows and number of columns use <code>nrow()</code> and <code>ncol()</code></p>
+<pre class="r"><code>nrow(df)</code></pre>
+<pre><code>## [1] 5</code></pre>
+<pre class="r"><code>ncol(df)</code></pre>
+<pre><code>## [1] 3</code></pre>
+<p>To get the rownames and column names use <code>rownames()</code> and <code>colnames()</code> function</p>
+<pre class="r"><code>colnames(df)</code></pre>
+<pre><code>## [1] &quot;days&quot; &quot;temp&quot; &quot;rain&quot;</code></pre>
+<pre class="r"><code>rownames(df)</code></pre>
+<pre><code>## [1] &quot;1&quot; &quot;2&quot; &quot;3&quot; &quot;4&quot; &quot;5&quot;</code></pre>
+</div>
+</div>
+<div id="assigning-cells-a-value" class="section level3">
+<h3>9.5 Assigning cells a value</h3>
+<pre class="r"><code>df[[1,'temp']] &lt;- 48
+df</code></pre>
+<pre><code>##   days temp  rain
+## 1    M   48  TRUE
+## 2    T    3 FALSE
+## 3    W    6 FALSE
+## 4   Th    3  TRUE
+## 5    F    7 FALSE</code></pre>
+</div>
+<div id="referencing-cells-columns-rows" class="section level3">
+<h3>9.6 Referencing [Cells, Columns, Rows]</h3>
+<div id="reference-a-cell-in-data-frame-using" class="section level4">
+<h4>9.6.1 Reference a cell in data frame using <code>[[]]</code></h4>
+<pre class="r"><code>df[[1,2]]</code></pre>
+<pre><code>## [1] 48</code></pre>
+<p><strong>OR</strong></p>
+<pre class="r"><code>df[[1,'temp']]</code></pre>
+<pre><code>## [1] 48</code></pre>
+</div>
+<div id="reference-a-row" class="section level4">
+<h4>9.6.2 Reference a row</h4>
+<pre class="r"><code>df[3,]</code></pre>
+<pre><code>##   days temp  rain
+## 3    W    6 FALSE</code></pre>
+</div>
+<div id="reference-a-column" class="section level4">
+<h4>9.6.3 Reference a column</h4>
+<p>Let’s start with assigning mtcars dataset to a variable <code>df</code></p>
+<pre class="r"><code>df &lt;- mtcars</code></pre>
+<p>To get the output in a vector format, there are 4 methods</p>
+<p><strong>Method 1</strong></p>
+<pre class="r"><code>df$mpg</code></pre>
+<pre><code>##  [1] 21.0 21.0 22.8 21.4 18.7 18.1 14.3 24.4 22.8 19.2 17.8 16.4 17.3 15.2
+## [15] 10.4 10.4 14.7 32.4 30.4 33.9 21.5 15.5 15.2 13.3 19.2 27.3 26.0 30.4
+## [29] 15.8 19.7 15.0 21.4</code></pre>
+<p><strong>Method 2</strong></p>
+<pre class="r"><code>df[,'mpg']</code></pre>
+<pre><code>##  [1] 21.0 21.0 22.8 21.4 18.7 18.1 14.3 24.4 22.8 19.2 17.8 16.4 17.3 15.2
+## [15] 10.4 10.4 14.7 32.4 30.4 33.9 21.5 15.5 15.2 13.3 19.2 27.3 26.0 30.4
+## [29] 15.8 19.7 15.0 21.4</code></pre>
+<p><strong>Method 3</strong></p>
+<pre class="r"><code>df[,1]</code></pre>
+<pre><code>##  [1] 21.0 21.0 22.8 21.4 18.7 18.1 14.3 24.4 22.8 19.2 17.8 16.4 17.3 15.2
+## [15] 10.4 10.4 14.7 32.4 30.4 33.9 21.5 15.5 15.2 13.3 19.2 27.3 26.0 30.4
+## [29] 15.8 19.7 15.0 21.4</code></pre>
+<p><strong>Method 4</strong></p>
+<pre class="r"><code>df[['mpg']]</code></pre>
+<pre><code>##  [1] 21.0 21.0 22.8 21.4 18.7 18.1 14.3 24.4 22.8 19.2 17.8 16.4 17.3 15.2
+## [15] 10.4 10.4 14.7 32.4 30.4 33.9 21.5 15.5 15.2 13.3 19.2 27.3 26.0 30.4
+## [29] 15.8 19.7 15.0 21.4</code></pre>
+<p>To get the output in a data frame format</p>
+<pre class="r"><code>df['mpg']</code></pre>
+<pre><code>##                      mpg
+## Mazda RX4           21.0
+## Mazda RX4 Wag       21.0
+## Datsun 710          22.8
+## Hornet 4 Drive      21.4
+## Hornet Sportabout   18.7
+## Valiant             18.1
+## Duster 360          14.3
+## Merc 240D           24.4
+## Merc 230            22.8
+## Merc 280            19.2
+## Merc 280C           17.8
+## Merc 450SE          16.4
+## Merc 450SL          17.3
+## Merc 450SLC         15.2
+## Cadillac Fleetwood  10.4
+## Lincoln Continental 10.4
+## Chrysler Imperial   14.7
+## Fiat 128            32.4
+## Honda Civic         30.4
+## Toyota Corolla      33.9
+## Toyota Corona       21.5
+## Dodge Challenger    15.5
+## AMC Javelin         15.2
+## Camaro Z28          13.3
+## Pontiac Firebird    19.2
+## Fiat X1-9           27.3
+## Porsche 914-2       26.0
+## Lotus Europa        30.4
+## Ford Pantera L      15.8
+## Ferrari Dino        19.7
+## Maserati Bora       15.0
+## Volvo 142E          21.4</code></pre>
+<p><strong>OR</strong></p>
+<pre class="r"><code>df[1]</code></pre>
+<pre><code>##                      mpg
+## Mazda RX4           21.0
+## Mazda RX4 Wag       21.0
+## Datsun 710          22.8
+## Hornet 4 Drive      21.4
+## Hornet Sportabout   18.7
+## Valiant             18.1
+## Duster 360          14.3
+## Merc 240D           24.4
+## Merc 230            22.8
+## Merc 280            19.2
+## Merc 280C           17.8
+## Merc 450SE          16.4
+## Merc 450SL          17.3
+## Merc 450SLC         15.2
+## Cadillac Fleetwood  10.4
+## Lincoln Continental 10.4
+## Chrysler Imperial   14.7
+## Fiat 128            32.4
+## Honda Civic         30.4
+## Toyota Corolla      33.9
+## Toyota Corona       21.5
+## Dodge Challenger    15.5
+## AMC Javelin         15.2
+## Camaro Z28          13.3
+## Pontiac Firebird    19.2
+## Fiat X1-9           27.3
+## Porsche 914-2       26.0
+## Lotus Europa        30.4
+## Ford Pantera L      15.8
+## Ferrari Dino        19.7
+## Maserati Bora       15.0
+## Volvo 142E          21.4</code></pre>
+<p>Return multiple columns</p>
+<pre class="r"><code>head(df[c('mpg', 'cyl')])</code></pre>
+<pre><code>##                    mpg cyl
+## Mazda RX4         21.0   6
+## Mazda RX4 Wag     21.0   6
+## Datsun 710        22.8   4
+## Hornet 4 Drive    21.4   6
+## Hornet Sportabout 18.7   8
+## Valiant           18.1   6</code></pre>
+<p>To add rows and columns to an existing data frame use the rbind() and cbind() functions To add a new column you can use <code>df$colName &lt;- 2*previous columns</code></p>
+<p>Rename columns using <code>colnames(df) &lt;- c(&quot;a&quot;,&quot;b&quot;,&quot;c&quot;,&quot;d&quot;,&quot;e&quot;,&quot;f&quot;)</code></p>
+<p>To rename a specific columns <code>colnames(df)[1] &lt;- &quot;New_col&quot;</code></p>
+</div>
+</div>
+<div id="filtering-data" class="section level3">
+<h3>9.7 Filtering data</h3>
+<div id="filtering-rows-as-per-condition" class="section level4">
+<h4>9.7.1 Filtering rows as per condition</h4>
+<pre class="r"><code>mtcars[mtcars$mpg &gt; 20, ]</code></pre>
+<pre><code>##                 mpg cyl  disp  hp drat    wt  qsec vs am gear carb
+## Mazda RX4      21.0   6 160.0 110 3.90 2.620 16.46  0  1    4    4
+## Mazda RX4 Wag  21.0   6 160.0 110 3.90 2.875 17.02  0  1    4    4
+## Datsun 710     22.8   4 108.0  93 3.85 2.320 18.61  1  1    4    1
+## Hornet 4 Drive 21.4   6 258.0 110 3.08 3.215 19.44  1  0    3    1
+## Merc 240D      24.4   4 146.7  62 3.69 3.190 20.00  1  0    4    2
+## Merc 230       22.8   4 140.8  95 3.92 3.150 22.90  1  0    4    2
+## Fiat 128       32.4   4  78.7  66 4.08 2.200 19.47  1  1    4    1
+## Honda Civic    30.4   4  75.7  52 4.93 1.615 18.52  1  1    4    2
+## Toyota Corolla 33.9   4  71.1  65 4.22 1.835 19.90  1  1    4    1
+## Toyota Corona  21.5   4 120.1  97 3.70 2.465 20.01  1  0    3    1
+## Fiat X1-9      27.3   4  79.0  66 4.08 1.935 18.90  1  1    4    1
+## Porsche 914-2  26.0   4 120.3  91 4.43 2.140 16.70  0  1    5    2
+## Lotus Europa   30.4   4  95.1 113 3.77 1.513 16.90  1  1    5    2
+## Volvo 142E     21.4   4 121.0 109 4.11 2.780 18.60  1  1    4    2</code></pre>
+</div>
+<div id="filtering-with-multiple-conditions" class="section level4">
+<h4>9.7.2 Filtering with multiple conditions</h4>
+<pre class="r"><code>mtcars[(mtcars$mpg &gt; 20) &amp; (mtcars$cyl == 6),]</code></pre>
+<pre><code>##                 mpg cyl disp  hp drat    wt  qsec vs am gear carb
+## Mazda RX4      21.0   6  160 110 3.90 2.620 16.46  0  1    4    4
+## Mazda RX4 Wag  21.0   6  160 110 3.90 2.875 17.02  0  1    4    4
+## Hornet 4 Drive 21.4   6  258 110 3.08 3.215 19.44  1  0    3    1</code></pre>
+</div>
+<div id="subset-function-for-filtering" class="section level4">
+<h4>9.7.3 <code>subset()</code> function for filtering</h4>
+<pre class="r"><code>subset(mtcars, mpg &gt; 20 &amp; cyl == 6)</code></pre>
+<pre><code>##                 mpg cyl disp  hp drat    wt  qsec vs am gear carb
+## Mazda RX4      21.0   6  160 110 3.90 2.620 16.46  0  1    4    4
+## Mazda RX4 Wag  21.0   6  160 110 3.90 2.875 17.02  0  1    4    4
+## Hornet 4 Drive 21.4   6  258 110 3.08 3.215 19.44  1  0    3    1</code></pre>
+<p>The subset function works well since you don’t have to type <code>mtcars$name_of_column</code> everytime.</p>
+</div>
+</div>
+<div id="dealing-with-nas" class="section level3">
+<h3>9.8 Dealing with NA’s</h3>
+<pre class="r"><code>is.na(mtcars)</code></pre>
+<pre><code>##                       mpg   cyl  disp    hp  drat    wt  qsec    vs    am
+## Mazda RX4           FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## Mazda RX4 Wag       FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## Datsun 710          FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## Hornet 4 Drive      FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## Hornet Sportabout   FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## Valiant             FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## Duster 360          FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## Merc 240D           FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## Merc 230            FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## Merc 280            FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## Merc 280C           FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## Merc 450SE          FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## Merc 450SL          FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## Merc 450SLC         FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## Cadillac Fleetwood  FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## Lincoln Continental FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## Chrysler Imperial   FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## Fiat 128            FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## Honda Civic         FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## Toyota Corolla      FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## Toyota Corona       FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## Dodge Challenger    FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## AMC Javelin         FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## Camaro Z28          FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## Pontiac Firebird    FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## Fiat X1-9           FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## Porsche 914-2       FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## Lotus Europa        FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## Ford Pantera L      FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## Ferrari Dino        FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## Maserati Bora       FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## Volvo 142E          FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+##                      gear  carb
+## Mazda RX4           FALSE FALSE
+## Mazda RX4 Wag       FALSE FALSE
+## Datsun 710          FALSE FALSE
+## Hornet 4 Drive      FALSE FALSE
+## Hornet Sportabout   FALSE FALSE
+## Valiant             FALSE FALSE
+## Duster 360          FALSE FALSE
+## Merc 240D           FALSE FALSE
+## Merc 230            FALSE FALSE
+## Merc 280            FALSE FALSE
+## Merc 280C           FALSE FALSE
+## Merc 450SE          FALSE FALSE
+## Merc 450SL          FALSE FALSE
+## Merc 450SLC         FALSE FALSE
+## Cadillac Fleetwood  FALSE FALSE
+## Lincoln Continental FALSE FALSE
+## Chrysler Imperial   FALSE FALSE
+## Fiat 128            FALSE FALSE
+## Honda Civic         FALSE FALSE
+## Toyota Corolla      FALSE FALSE
+## Toyota Corona       FALSE FALSE
+## Dodge Challenger    FALSE FALSE
+## AMC Javelin         FALSE FALSE
+## Camaro Z28          FALSE FALSE
+## Pontiac Firebird    FALSE FALSE
+## Fiat X1-9           FALSE FALSE
+## Porsche 914-2       FALSE FALSE
+## Lotus Europa        FALSE FALSE
+## Ford Pantera L      FALSE FALSE
+## Ferrari Dino        FALSE FALSE
+## Maserati Bora       FALSE FALSE
+## Volvo 142E          FALSE FALSE</code></pre>
+<p>The above function will return a data frame of logicals: TRUE if missing, FALSE O/W.</p>
+<pre class="r"><code>any(is.na(mtcars))</code></pre>
+<pre><code>## [1] FALSE</code></pre>
+<p>This will return a single logical value, False if no data is missing and True if atleast one data cell has missing values.</p>
+<div id="to-replace-missing-values-in-your-entire-data-set-use" class="section level4">
+<h4>9.8.1 To replace missing values in your entire data set use</h4>
+<pre class="r"><code>df[is.na(df)] &lt;- 0</code></pre>
+</div>
+<div id="to-replace-missing-values-in-a-specific-column-with-the-mean-you-can-do" class="section level4">
+<h4>9.8.2 To replace missing values in a specific column with the mean, you can do:</h4>
+<pre class="r"><code>mtcars$mpg[is.na(mtcars$mpg)] &lt;- mean(mtcars$mpg)</code></pre>
+</div>
+</div>
+</div>
 
 
 

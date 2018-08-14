@@ -362,5 +362,258 @@ mat[1:2,]
 mat[4:5,1:2]
 ```
 
+# 9. Data Frames
+Data frames enable us to organize and mix data types to create powerful data structures,
+unlike vectors and matrices where all the elements should be of the same data type.
+Data frames can be thought of as an Excel spreadsheet.
+
+### 9.1 Few build-in data frames in R
+
+```{r}
+state.x77
+USPersonalExpenditure
+women
+```
+To see all the built-in data sets use
+
+```{r}
+data()
+```
+
+### 9.2 Data frame functions
+#### 9.2.1 Top 5 rows
+```{r}
+head(state.x77)
+```
+
+#### 9.2.2 Bottom 5 rows
+```{r}
+tail(state.x77)
+```
+
+#### 9.2.3 Structure of the data frame
+```{r}
+str(state.x77)
+```
+
+#### 9.2.4 Summary of Statistical Data
+```{r}
+summary(state.x77)
+```
+
+### 9.3 Create Data frames - Use the data.frame()
+```{r}
+days <- c('M','T','W','Th','F')
+temp <- c(5,3,6,3,7)
+rain <- c(T,F,F,T,F)
+
+df <- data.frame(Days=days, Temperature=temp, Rain=rain)
+df
+```
+**OR**
+You can directly use the names of the vectors and they would be used as column names by default.
+```{r}
+df <- data.frame(days, temp, rain)
+df
+```
+The structure and summary of the data frame `df` is. 
+```{r}
+str(df)
+summary(df)
+```
+This is important during exploratory data analysis.
+### 9.4 Indexing and Sorting data frames
+#### 9.4.1 Index the first row of `df`
+```{r}
+df[1,]
+```
+
+#### 9.4.2 Index the first column of `df`
+```{r}
+df[,1]
+```
+
+**OR**
+```{r}
+df$days         #This method returns a vector
+```
+
+**OR**
+```{r}
+df['days']      #This method returns a data frame
+```
+
+
+Instead of putting the index of the columns, we can use the names of the columns
+```{r}
+df[1:3, c('days','temp')]
+```
+
+#### 9.4.3 `subset()` function for doing a conditional subset  
+
+Subset all rows where `rain == TRUE`  
+
+```{r}
+subset(df, subset = rain == T)
+```
+
+Subset all rows where `temp <= 22`
+```{r}
+subset(df, subset = temp <= 22)
+```
+The outputs are in data frame format.
+
+#### 9.4.4 `order()` function
+```{r}
+sorted.temp <- order(df['temp'])
+sorted.temp
+```
+
+This will output a vector of sorted temperature indexes. The default is ascending.
+We can use these indexes to sort the data frame. 
+
+```{r}
+df[sorted.temp,]
+```
+
+To sort in descending order
+```{r}
+desc.temp <- order(-df['temp'])
+df[desc.temp,]
+```
+**OR**
+```{r}
+desc.temp <- order(-df$temp)
+df[desc.temp,]
+```
+
+To find the number of rows and number of columns use `nrow()` and `ncol()`
+```{r}
+nrow(df)
+ncol(df)
+```
+
+To get the rownames and column names use `rownames()` and `colnames()` function
+```{r}
+colnames(df)
+rownames(df)
+```
+### 9.5 Assigning cells a value
+```{r}
+df[[1,'temp']] <- 48
+df
+```
+### 9.6 Referencing [Cells, Columns, Rows]
+#### 9.6.1 Reference a cell in data frame using `[[]]`
+```{r}
+df[[1,2]]
+```
+
+**OR**
+```{r}
+df[[1,'temp']]
+```
+
+
+#### 9.6.2 Reference a row
+```{r}
+df[3,]
+```
+
+#### 9.6.3 Reference a column
+Let's start with assigning mtcars dataset to a variable `df`
+```{r}
+df <- mtcars
+```
+To get the output in a vector format, there are 4 methods
+
+**Method 1**
+```{r}
+df$mpg
+```
+
+**Method 2**
+```{r}
+df[,'mpg']
+```
+
+**Method 3**
+```{r}
+df[,1]
+```
+
+**Method 4**
+```{r}
+df[['mpg']]
+```
+
+To get the output in a data frame format
+```{r}
+df['mpg']
+```
+
+**OR**
+```{r}
+df[1]
+```
+
+
+Return multiple columns
+```{r}
+head(df[c('mpg', 'cyl')])
+```
+
+To add rows and columns to an existing data frame use the rbind() and cbind() functions
+To add a new column you can use `df$colName <- 2*previous columns`
+
+Rename columns using
+`colnames(df) <- c("a","b","c","d","e","f")`
+
+To rename a specific columns
+`colnames(df)[1] <- "New_col"`
+
+### 9.7 Filtering data
+#### 9.7.1 Filtering rows as per condition
+```{r}
+mtcars[mtcars$mpg > 20, ]
+```
+
+#### 9.7.2 Filtering with multiple conditions
+```{r}
+mtcars[(mtcars$mpg > 20) & (mtcars$cyl == 6),]
+```
+
+#### 9.7.3 `subset()` function for filtering
+```{r}
+subset(mtcars, mpg > 20 & cyl == 6)
+```
+The subset function works well since you don't have to type `mtcars$name_of_column` everytime.  
+
+### 9.8 Dealing with NA's
+```{r}
+is.na(mtcars)
+```
+
+The above function will return a data frame of logicals: TRUE if missing, FALSE O/W. 
+```{r}
+any(is.na(mtcars))
+```
+
+This will return a single logical value, False if no data is missing and True if 
+atleast one data cell has missing values.
+
+
+#### 9.8.1 To replace missing values in your entire data set use
+```{r}
+df[is.na(df)] <- 0
+```
+
+#### 9.8.2 To replace missing values in a specific column with the mean, you can do:
+```{r}
+mtcars$mpg[is.na(mtcars$mpg)] <- mean(mtcars$mpg)
+```
+
+
+
 
 
