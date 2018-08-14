@@ -20,4 +20,17 @@ Today I added operations related to matrices, in the r_datatypes_datastructures 
 
 * Creating a matrix in r
 * Arithmetic functions for matrices, and
-* Matrix indexing operations
+* Matrix indexing operations  
+
+## Day 4 | [Data structure (Dataframes)](https://github.com/NikhilSawal/100DaysOfMLCode/tree/master/Data%20types%20and%20data%20structures%20in%20r)
+
+For day 4, I added the syntax for data frames, which is what we would be dealing with, 80% of the times in any machine learning project. I have added all the changes to r_datatypes_datastructures.r and readme.rmd file. The syntax documented in today's post should get you acquainted with: 
+
+* Accessing built-in data frames in R
+* Creating data frames
+* Indexing and sorting rows as per conditions
+* Referencing [Cells, Columns, Rows]
+* Filtering data, and
+* Dealing with NA's  
+
+All of the above mentioned operations are important from Exploratory data analysis stand point. 
