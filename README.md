@@ -44,3 +44,9 @@ On Day 1, we saw what is statistical learning, what is the difference between in
 * How to assess model accuracy?  
 
 ![](Images/Day_5.png) 
+
+## Day 6 | Simple Linear Regression 
+
+Today's infographics explains the mathematical intuition behind simple linear regression.  
+
+![](Images/Day_6.png) 
