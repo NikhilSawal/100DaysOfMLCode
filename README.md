@@ -50,3 +50,12 @@ On Day 1, we saw what is statistical learning, what is the difference between in
 Today's infographics explains the mathematical intuition behind simple linear regression.  
 
 ![](Images/Day_6.png) 
+
+## Day 7 | [Simple Linear Regression (r code)](https://github.com/NikhilSawal/100DaysOfMLCode/tree/master/simple_linear_regression)  
+
+Performed simple linear regression on boston dataset from `ISLR package` in r, taking medv(median house value) as the response and lstat (percent of households with low socioeconomic status) as predictor. The r file covers all steps layed out in day 6 infographics including:  
+* Estimating regression coefficients.  
+* Assessing accuracy of the coefficients by computing standard error.  
+* Testing significance of regression.  
+* Computing R^2 for checking the accuracy of the fit.  
+
