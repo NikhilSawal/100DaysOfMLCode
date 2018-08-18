@@ -59,3 +59,10 @@ Performed simple linear regression on boston dataset from `ISLR package` in r, t
 * Testing significance of regression.  
 * Computing R^2 for checking the accuracy of the fit.  
 
+## Day 8 | [Simple Linear Regression (Contd.)](https://github.com/NikhilSawal/100DaysOfMLCode/tree/master/simple_linear_regression)  
+
+Today I continued on the Day 7 problem and performed the following tasks:  
+* Test-train split, using `caTools` package in R
+* Created a function `make_zero` that replaces every negative values from the prediction vector, with 0
+* Computed MSE and R^2 for the prediction generated from the test set
+* Plotted the regression line on both test and train set
