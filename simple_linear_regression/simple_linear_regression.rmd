@@ -1,0 +1,186 @@
+---
+title: "Simple Linear Regression"
+author: "Nikhil Sawal"
+date: "August 18, 2018"
+output: html_document
+---
+
+# 1. Loading Libraries
+```{r, warning=F}
+#install.packages("ISLR")
+
+library(MASS)
+library(ISLR)
+library(caTools)          #to do a test train split
+
+```
+
+# 2. Introduction  
+
+We will use the Boston house price data which records medv (median house value) for 506 neighborhoods in Boston. The following lines of code will store the data in the object `df`. We use `attach(df)` to ease indexing operations for referring columns.
+
+```{r}
+df <- Boston
+attach(df)
+```
+
+To return the descriptions about each column of our data frame we use the `str()` function. 
+```{r}
+str(df)
+```
+Our dataset has a total of 506 observations.  
+
+`colnames()` is used to check all the variables in the data set.
+```{r}
+colnames(df)
+```
+Now that, we explored the sturcture of the data set, lets do a test-train split. We will fit a regression model based on our training set and then use the model to see how it performs on the test set.  
+
+
+# 3. Test-Train split
+We will use the `sample.split()` function from the `'caTools'` package to make the test-train split. `set.seed()` is used to recreate the same test-train split every time. This is necessary to recreate similar results. Using `set.seed()` function, ensures that we get same instances in the training set and the test set when we use the sample.split() function.  
+
+```{r}
+set.seed(101)
+sample <- sample.split(df$medv, SplitRatio = 0.7)
+train <- subset(df, sample==T)
+test <- subset(df, sample==F)
+```
+Let's check the number of observations in the test and training set using `str()` function. 
+
+```{r}
+str(train)
+str(test)
+```
+**Notice** that the train set has 367 observations and test set has 139 observations, since we used a split ratio = 0.7
+
+# 4. Estimate Regression Coefficients
+For the regression model that we want to fit, we use`medv` as the response. It represents the median house prices in Boston. Since we are dealing with simple linear regression, we will use only one predictor variable, `lstat`, where `lstat` represents the **percent of households with low socioeconomic status**. 
+
+In our situation response = medv (the median house value) and predictor = lstat. We also need to mention the name of the data set. We use the lm(response ~ predictor, data=data.name) function, to train our model.
+
+```{r}
+lm.fit <- lm(medv ~ lstat, data = train)
+```
+
+Using the `summary()` function on `lm.fit` returns the estimates for regression coefficients, standard error, t-statistic, p-value and R^2 value.
+
+```{r}
+summary(lm.fit)
+```
+From the above output, the pieces of information that we care about are, the coefficient estimates, Standara error, p-value and R^2 value. We will try to interpret each of these pieces of information from the context of our problem. 
+
+## 4.1 Interpreting the outcome of `summary()`
+### 4.1.1 Slope and y-intercept
+Our regression equation is of the form, `mdev ~ y-intercept + b1 * lstat + e`. Based on the above output, the `y-intercept = 35.04` and the slope or `b1 = -0.97`. 
+
+* The **y-intercept** suggests that, for neighborhoods in Boston, where the percent of households with low socioeconomic status is 0% or lstat = 0%, the median house value is 35.04 price unit. 
+* The **negative slope** suggests that, as the value of lstat increses, i.e. as the percent of households with low socioeconomic status in a neighborhood increases, the median value of the houses declines.
+* It also suggests that, for every one percent increase in `lstat`, the median value of house drops by 0.97 in terms of price units.
+
+### 4.1.2 Standard Error of estimate for lstat
+The standard error for the estimate of lstat`(b1)` is 0.04661. It signifies, to what extent would our estimate change if we used a different data set. If the standard error is larger, the farther the estimate from 0, more likely are the chances that the corresponding predictor will be significant. If the estimate is nearer to 0, there is a greater chance of the confidence interval including 0, which renders the predictor insignificant. We will understand it, when we take a look at the confidence interval in the next section.
+
+### 4.1.3 Confidence Interval and p-value
+The 95% confidence interval is computed using the following line of code.
+```{r}
+confint(lm.fit, level = 0.95)
+```
+Since we have a 2-tailed test, our critical regions include 2.5% (0.05/2) in the bottom tail and 2.5% (1-0.05/2) in the top tail. Our confidence interval for `lstat` does not include 0 and the `p-value` is also very small `(<2e-16)`. So, we reject the null hypothesis, claiming that there is a relationship between the response and predictors i.e. the slope != 0. The smaller `p-value` suggests that, its extremely unlikely, that the results were observed by chance. 
+
+
+### 4.1.4 Assessing the accuracy of the model
+Lastly, the summary outputs the R^2 value based on the training set. It's 0.5445. It suggests that 54.45% of the total variability in Y (response) is explained by the variability in X (predictor).
+
+We can also get a list of all the outputs that `summary()` function returns, by using `names()` function on `lm.fit`.
+```{r}
+names(lm.fit)
+```
+
+
+Now that we have trained a model. It's time to make some prediction.
+
+# 5. Predicting `medv`
+
+The `predict()` function is used to predict response based on the model that we trained from the training set. Later we compare these predictions with the observed values that we have in our test set and assess the accuracy of our model using Mean Squared Error (MSE) and Coefficient of Determination (R^2). We bind the predicted value and the observed values and store them in a data frame named `results`.
+
+```{r}
+prediction <- predict(lm.fit, test)
+results <- cbind(prediction, test$medv)
+colnames(results) <- c('predicted', 'actual')
+results <- as.data.frame(results)
+head(results)
+```
+
+Now that we have our predictions ready, let's check if our model predicted a negative value for median house value. If that's the case, we would want to replace these values with 0, since it is not possible to evaluate the value of a house to be negative. We use `min()` function on the predicted column from `results` data frame, to check this.
+
+```{r}
+min(results$predicted)
+```
+Since we do observe a negative value, it's necessary that we replace it with, 0. 
+To take care of negative values, we write a function, `make_zero` that replaces every negative value with a 0.
+
+```{r}
+make_zero <- function(x){
+  if(x<0){
+    return(0)
+  }else{
+    return(x)
+  }
+}
+```
+
+Now, we apply the function to the predicted columns of results data frame, to replace all negative values with a 0. 
+
+```{r}
+results$predicted <- sapply(results$predicted, make_zero)
+min(results$predicted)
+```
+# 6. Asses Model Accuracy 
+
+Once we have all of our predictions ready, it's time to check the accuracy of our fit. We will use 2 measures to do this:  
+
+* Mean squared error (MSE)
+* Coefficient of determination (R^2)
+
+## 6.1 Mean squared error [MSE]
+MSE measures the average squared difference between between the observed value and the predicted values.
+```{r}
+mse <- mean((results$predicted-results$actual)^2)
+mse
+```
+The way we interpret this outcome is that, even if the model were correct and the true values of the unknown coefficients (b0 and b1) were known exactly, any prediction of `medv` the response, based on `lstat` the predictor would be off by 32.44591  
+
+## 6.2 Coefficient of determination [R^2]
+R^2 measures the amount of variation in Y, that is explained be the variation in X.
+```{r}
+SSRes <- sum((results$predicted-results$actual)^2)
+SST <- sum((test$medv-mean(df$medv))^2)
+
+R2 <- 1-(SSRes/SST)
+R2
+```
+**Notice** the R^2 value we got from our test set is very close to the one we obtained from our training set.  
+
+`predict()` function can be use to produce confidence and prediction interval for response (medv) for a given value of predictor (lstat)
+
+```{r}
+head(predict(lm.fit, test, interval = "confidence"))
+head(predict(lm.fit, test, interval = "prediction"))
+```
+# 7. Visualization
+We now fit a regression line to both our test and train data and see how it performs on both datasets side-by-side.
+
+```{r}
+par(mfrow=c(1,2))
+plot(test$lstat, test$medv)
+abline(lm.fit, lwd=3, col="red")
+
+plot(train$lstat, train$medv)
+abline(lm.fit, lwd=3, col="red")
+```
+
+The relation between Y and X does look non-linear, but our regression line is doing a decent job.
+
+
+
