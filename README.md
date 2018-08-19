@@ -67,7 +67,7 @@ Today I continued on the Day 7 problem and performed the following tasks:
 * Computed MSE and R^2 for the prediction generated from the test set
 * Plotted the regression line on both test and train set  
 
-## Day 9 | [Simple Linear Regression (Intepretation of the model)](https://github.com/NikhilSawal/100DaysOfMLCode/blob/master/simple_linear_regression/simple_linear_regression.rmd)  
+## Day 9 | [Simple Linear Regression (Intepretation of the model outcome)](https://github.com/NikhilSawal/100DaysOfMLCode/blob/master/simple_linear_regression/simple_linear_regression.rmd)  
 
 Today I updated the readme file for the simple linear regression implementation on Day 7 and Day 8. Todays updates are math and stat intensive and I have made attempts to provide an easy description for interpreting different outcomes like:  
 * Slope and y-intercept
