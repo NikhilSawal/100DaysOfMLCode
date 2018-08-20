@@ -79,6 +79,6 @@ Today I updated the readme file for the simple linear regression implementation 
 
 ## Day 10 | Simple Linear Regression [Model Evaluation and conclusion]
 
-Today's infographics evaluate the simple linear regression model we developed from Day 6 - Day 10 and makes conclusions.  
+Today's infographics evaluate the simple linear regression model we developed from Day 6 - Day 9 and makes conclusions.  
 
 ![](Images/Day_10.png) 
