@@ -73,4 +73,6 @@ Today I updated the readme file for the simple linear regression implementation 
 * Slope and y-intercept
 * Standard error of the estimates of regression coefficients
 * Confidence interval and p-values
-* Measures of assessing model accuracy
+* Measures of assessing model accuracy  
+
+![](simple_linear_regression/Rplot.png) 
