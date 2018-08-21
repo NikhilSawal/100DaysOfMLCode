@@ -1,0 +1,90 @@
+---
+title: "Multiple Linear Regression"
+author: "Nikhil Sawal"
+date: "August 21, 2018"
+output: html_document
+---
+
+## Loading libraries
+```{r}
+library(MASS)
+library(ISLR)
+library(caTools)
+
+df <- Boston
+attach(df)
+
+```
+
+## Test-train split
+```{r}
+set.seed(102)
+split <- sample.split(df$medv, SplitRatio = 0.7)
+train <- subset(df, split == T)
+test <- subset(df, split == F)
+
+```
+
+## Model 1 [With all predictors]
+```{r}
+lm.fit <- lm(medv~., data = train)
+summary(lm.fit)
+```
+
+## Model 2 [With only significant predictors]
+```{r}
+lm.fit1 <- lm(medv~.-crim-indus-age, data = train)
+summary(lm.fit1)
+```
+
+## Model Evaluation Function, `model_eval`
+
+This function is written for reusability. Notice that every time we fit a new model, we would need to repeat the following operations over and over again.  
+
+* Make predictions & store them in a data frame with the observed values
+* Replace negatives by zeros, if any in the predictions
+* Coompute MSE and R^2
+
+Wrapping these operations in a function, will save us a lot of time, since all we need to do is call the function, `model_eval` and pass in the new model we fit and it will return the test MSE and R2 in the form of a list. 
+
+
+```{r}
+model_eval <- function(model){
+  
+  # Prediction
+  predictions <- predict(model, test)
+  results <- cbind(predictions, test$medv)
+  colnames(results) <- c('Predictions', 'Observed')
+  results <- as.data.frame(results)
+  
+  # Function to replace negatives with 0
+  make_zero <- function(x){
+    if(x<0){
+      return(0)
+    }else{
+      return(x)
+    }
+  }
+  
+  results$Predictions <- sapply(results$Predictions, make_zero)
+  
+  # Mean squared error
+  mse <- mean((results$Predictions - results$Observed)^2)
+
+  # R^2
+  SSRes <- sum((results$Predictions-results$Observed)^2)
+  SST <- sum((results$Observed-mean(results$Observed))^2)
+  
+  r2 <- 1 - (SSRes/SST) 
+  return(list(mse, r2))
+  
+}
+
+```
+
+## MSE and R2
+```{r}
+model_eval(lm.fit)
+model_eval(lm.fit1)
+```
+
