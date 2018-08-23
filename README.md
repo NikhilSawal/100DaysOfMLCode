@@ -86,3 +86,9 @@ Today's infographics evaluate the simple linear regression model we developed fr
 ## Day 11 | [Multiple Linear Regression](https://github.com/NikhilSawal/100DaysOfMLCode/tree/master/multiple_linear_regression)
 
 For day 11, I used the same boston data set, which was used for simple linear regression model, to fit a multiple regression model with all predictors. The highlight of todays' code, is `model_eval` function which save us a lot of time from repeating the same operations, everytime we fit a new model.
+
+## Day 12 | Multiple Linear Regression [Infographic]
+
+Today's infographics explains the mathematical intuition behind multiple linear regression.  
+
+![](Images/Day_12.png) 
