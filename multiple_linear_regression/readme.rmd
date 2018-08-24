@@ -10,6 +10,7 @@ output: html_document
 library(MASS)
 library(ISLR)
 library(caTools)
+library(corrplot)
 
 df <- Boston
 attach(df)
@@ -45,7 +46,7 @@ This function is written for reusability. Notice that every time we fit a new mo
 * Replace negatives by zeros, if any in the predictions
 * Coompute MSE and R^2
 
-Wrapping these operations in a function, will save us a lot of time, since all we need to do is call the function, `model_eval` and pass in the new model we fit and it will return the test MSE and R2 in the form of a list. 
+Wrapping these operations in a function, will save us a lot of time, since all we need to do is call the function, `model_eval` and pass in the new model we fit and it will return the test MSE and R^2 in the form of a list. 
 
 
 ```{r}
@@ -82,9 +83,38 @@ model_eval <- function(model){
 
 ```
 
-## MSE and R2
+## Interaction terms
+The previous two models made a serious assumption, that the relationship between response `Y` and predictor `X` is additive, i.e. the effect of changes in a predictor variable `Xj` on the response `Y`, is independent of the values of other predictors. We relax this assumption by including the interaction terms.  
+
+**How do we choose the interaction terms?**  
+
+We check the correlation between the predictor variables and select the variables that have a correlation > 0.7
+We use the `corrplot()` library in R to visualize the correlations. Once we identify a set of variables that are highly correlated, we include their interaction terms in our model and refit. The following lines of code and plot will help us visualize.
 ```{r}
-model_eval(lm.fit)
-model_eval(lm.fit1)
+M <- cor(df)
+corrplot(M, method = "circle")
 ```
 
+From the above plot, we observe strong intractions like `indus*nox, indus*dis, indus*tax, nox*age, noc*dis, ade*dis, rad*tax`. We refit the model using the main effects and interaction and check the summary. 
+
+```{r}
+lm.fit2 <- lm(medv ~ crim + zn + chas + rm + ptratio + black + lstat +
+                indus*nox + indus*dis + indus*tax + nox*age + nox*dis + 
+                age*dis + rad*tax)
+summary(lm.fit2)
+```
+There is very little difference between the the R^2 value of this model and the previous model. Let
+## MSE and R2
+### Model 0
+```{r}
+model_eval(lm.fit)
+```
+### Model 1
+```{r}
+model_eval(lm.fit1)
+```
+### Model 2
+```{r}
+model_eval(lm.fit2)
+```
+Model 2 has shown good improvement in the test MSE and R^2 value. The MSE has reduced a little but the test R^2 has shown ~8% improvement. 

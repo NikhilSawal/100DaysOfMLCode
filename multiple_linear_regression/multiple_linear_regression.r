@@ -1,6 +1,7 @@
 library(MASS)
 library(ISLR)
 library(caTools)
+library(corrplot)
 
 df <- Boston
 attach(df)
@@ -49,5 +50,19 @@ model_evaluation <- function(model){
   
 }
 
+# Interaction terms
+M <- cor(df)
+corrplot(M, method = "circle")
+
+lm.fit2 <- lm(medv ~ crim + zn + chas + rm + ptratio + black + lstat +
+                indus*nox + indus*dis + indus*tax + nox*age + nox*dis + 
+                age*dis + rad*tax)
+
+# Model 0
 model_evaluation(lm.fit)
+
+# Model 1
 model_evaluation(lm.fit1)
+
+# Model 2
+model_evaluation(lm.fit2)
