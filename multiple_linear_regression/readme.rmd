@@ -2,7 +2,7 @@
 title: "Multiple Linear Regression"
 author: "Nikhil Sawal"
 date: "August 21, 2018"
-output: html_document
+output: github_document
 ---
 
 ## Loading libraries
