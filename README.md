@@ -96,4 +96,18 @@ Today's infographics explains the mathematical intuition behind multiple linear 
 ## Day 13 | [Multiple Linear Regression [Additive assumption]](https://github.com/NikhilSawal/100DaysOfMLCode/tree/master/multiple_linear_regression)  
 The regression model we developed on Day 11 made a serious assumption, that the relationship between response `Y` and predictor `X` is additive, i.e. the effect of changes in a predictor variable `Xj` on the response `Y`, is independent of the values of other predictors. We relax this assumption by including the interaction terms and assess how it affects the accuracy of the model. 
 
-![](Images/Rplot.png)
+![](Images/Rplot.png)  
+
+## Day 14 | Multiple Linear Regression - Model assumptions and adequacy checks  
+
+For day 14, I made an attempt to explain the various assumptions of regression and how to check if any of the assumptions is violated. The assumptions are as follows:  
+* There is a linear relationship between Y & X
+* The errors have constant variance
+* The errors are uncorrelated
+* The errors are normally distributed
+
+I have also included two other situations that might affect model accuracy. They include:   
+* Outlier & leverage points
+* Multicollinearity
+
+![](Images/Day_14.png)
