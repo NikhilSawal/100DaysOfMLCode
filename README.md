@@ -110,4 +110,8 @@ I have also included two other situations that might affect model accuracy. They
 * Outlier & leverage points
 * Multicollinearity
 
-![](Images/Day_14.png)
+![](Images/Day_14.png)  
+
+## Day 15 | [Multiple Linear Regression - Model assumptions and adequacy checks [R code]](https://github.com/NikhilSawal/100DaysOfMLCode/tree/master/multiple_linear_regression)  
+
+Today I performed model adequacy checks on our multiple regression problem and also tested the model for multicollinearity. From the output of our model it looks like, there is a minor but noticable violation of the assumptions and also there is multicollinearity. For more detailed explanation check the readme file by clicking the above link.
