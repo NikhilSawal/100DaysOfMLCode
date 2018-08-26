@@ -9,31 +9,16 @@ Loading libraries
 ``` r
 library(MASS)
 library(ISLR)
-```
-
-    ## Warning: package 'ISLR' was built under R version 3.5.1
-
-``` r
 library(caTools)
-```
-
-    ## Warning: package 'caTools' was built under R version 3.5.1
-
-``` r
 library(corrplot)
-```
+library(car)
 
-    ## Warning: package 'corrplot' was built under R version 3.5.1
-
-    ## corrplot 0.84 loaded
-
-``` r
 df <- Boston
 attach(df)
 ```
 
-Test-train split
-----------------
+Test-train split - using `caTools` package
+------------------------------------------
 
 ``` r
 set.seed(102)
@@ -44,6 +29,8 @@ test <- subset(df, split == F)
 
 Model 1 \[With all predictors\]
 -------------------------------
+
+Our first model of choice should be to include all variables and see how the model performs. Following lines of code will help us fit a model and dislplay the summary using the `summary()` function. The summary include estimates for our model coefficients i.e. all the `beta-hat's`, the standard error and the p-value based on t-statistic. It also outputs, values of the training R^2 and (adjusted R^2). We haven't talked about adjusted R^2 yet, but it's another and more reliable measure for checking model accuracy. The reason it is more reliable is that, unlike R^2, (adjusted R^2) penalizes if noise variables are added to the model, whereas R^2 keeps increasing as we add more variables to our model.
 
 ``` r
 lm.fit <- lm(medv~., data = train)
@@ -81,6 +68,8 @@ summary(lm.fit)
     ## Multiple R-squared:  0.7649, Adjusted R-squared:  0.7563 
     ## F-statistic: 88.36 on 13 and 353 DF,  p-value: < 2.2e-16
 
+Looking at the p-values, it seems like variables `crim`, `indus` and `age` are not useful in predicting the response. So, we try to fit our second model excluding these variables.
+
 Model 2 \[With only significant predictors\]
 --------------------------------------------
 
@@ -116,6 +105,8 @@ summary(lm.fit1)
     ## Residual standard error: 4.663 on 356 degrees of freedom
     ## Multiple R-squared:  0.7647, Adjusted R-squared:  0.758 
     ## F-statistic: 115.7 on 10 and 356 DF,  p-value: < 2.2e-16
+
+There are negligible differences between `R^2` and `(adjusted R^2)` of the two models. These are values for the training set and we really care about the performance of the model on the test set. In the following section, we develop a function that evaluated the model performance.
 
 Model Evaluation Function, `model_eval`
 ---------------------------------------
@@ -168,7 +159,7 @@ The previous two models made a serious assumption, that the relationship between
 
 **How do we choose the interaction terms?**
 
-We check the correlation between the predictor variables and select the variables that have a correlation &gt; 0.7 We use the `corrplot()` library in R to visualize the correlations. Once we identify a set of variables that are highly correlated, we include their interaction terms in our model and refit. The following lines of code and plot will help us visualize.
+The best way to choose interaction terms is to use domain knowledge. For the sake of simplicity, we check the correlation between the predictor variables and select the variables that have a correlation &gt; 0.7 We use the `corrplot()` library in R to visualize the correlations. Once we identify a set of variables that are highly correlated, we include their interaction terms in our model and refit. The following lines of code and plot will help us visualize.
 
 ``` r
 M <- cor(df)
@@ -226,7 +217,12 @@ summary(lm.fit2)
     ## Multiple R-squared:  0.7597, Adjusted R-squared:  0.7498 
     ## F-statistic: 76.67 on 20 and 485 DF,  p-value: < 2.2e-16
 
-There is very little difference between the the R^2 value of this model and the previous model. Let \#\# MSE and R2 \#\#\# Model 0
+There is very little difference between the R^2 value of this model and the previous model. Let's see how each of the model performs on test set, using the `model_eval` function, that we developed in previous section.
+
+MSE and R2
+----------
+
+### Model 0
 
 ``` r
 model_eval(lm.fit)
@@ -267,10 +263,7 @@ Model 2 has shown good improvement in the test MSE and R^2 value. The MSE has re
 Model adequacy checks
 =====================
 
-Model 2
--------
-
-To check the adequacy of the model, we will plot residuals vs. fitted values, to see if our assumptions about, linear relationship betweeen Y & X and constant variance of error terms hold.
+We specifically check the adequacy of model 2, since it comes more closer to a real world situation. To check the adequacy of the model, we will plot residuals vs. fitted values, to see if our assumptions about, linear relationship betweeen Y & X and constant variance of error terms, hold. We will also plot the normal probability plot to check the normality assumption.
 
 ``` r
 par(mfrow=c(2,2))
@@ -278,3 +271,27 @@ plot(lm.fit2)
 ```
 
 ![](readme_files/figure-markdown_github/unnamed-chunk-11-1.png)
+
+-   The plot in the top left panel is the plot of residuals vs. fitted values. It shows a non-linear relationship, implying that our assumption of the true model being linear is flawed. We can correct this by performing some transformations.
+
+-   The figure in the top right corner suggests that our normality assumption is also violated, since the residuals don't fall along the straight line.
+
+Multicollinearity
+=================
+
+As we saw on day 14, we can use VIF to check if multicollinearity exists. Multicollinearity refers to a near-linear dependency between predictor variables and response. If there is multicollinearity in our model, **then there would be a large amount of variance in our predictor varibles and hence our predictions would change drastically for different data sets**. So, it's really important to check for multicollinearity. As noted in the infographic, multicollinearity exists if VIF &gt; 5 or 10. We use the `vif()` function from the `car` library on our model.
+
+``` r
+vif(lm.fit2)
+```
+
+    ##       crim         zn       chas         rm    ptratio      black 
+    ##   1.960016   3.515546   1.100452   1.994547   2.078082   1.371131 
+    ##      lstat      indus        nox        dis        tax        age 
+    ##   3.034750 295.923219 149.380835 205.375686  26.967403 337.314703 
+    ##        rad  indus:nox  indus:dis  indus:tax    nox:age    nox:dis 
+    ## 144.680423 373.375546  10.959961  52.462606 533.370847 146.191290 
+    ##    dis:age    tax:rad 
+    ##  16.271746 178.002750
+
+From the above output, we can see that we have a lot of predictors with values &gt;&gt; 5 & 10. This implies serious multicollinearity and we need some measuere to treat it.
