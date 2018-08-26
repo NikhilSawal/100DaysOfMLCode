@@ -2,7 +2,7 @@
 title: "Simple Linear Regression"
 author: "Nikhil Sawal"
 date: "August 18, 2018"
-output: html_document
+output: rmarkdown::github_document
 ---
 
 # 1. Loading Libraries
