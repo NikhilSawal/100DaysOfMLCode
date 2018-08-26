@@ -2,9 +2,7 @@
 title: "R Data types and Data structures"
 author: "Nikhil Sawal"
 date: "August 11, 2018"
-output:
-  html_document: default
-  pdf_document: default
+output: rmarkdown::github_document
 ---
 
 # 1. Data Types
