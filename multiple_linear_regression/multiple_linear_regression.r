@@ -2,6 +2,7 @@ library(MASS)
 library(ISLR)
 library(caTools)
 library(corrplot)
+library(car)
 
 df <- Boston
 attach(df)
@@ -66,3 +67,9 @@ model_evaluation(lm.fit1)
 
 # Model 2
 model_evaluation(lm.fit2)
+
+# Model adequacy checks
+plot(lm.fit2)
+
+# Variance inflation factor
+vif(lm.fit2)

@@ -2,7 +2,7 @@
 title: "Multiple Linear Regression"
 author: "Nikhil Sawal"
 date: "August 21, 2018"
-output: github_document
+output: rmarkdown::github_document
 ---
 
 ## Loading libraries
@@ -118,3 +118,13 @@ model_eval(lm.fit1)
 model_eval(lm.fit2)
 ```
 Model 2 has shown good improvement in the test MSE and R^2 value. The MSE has reduced a little but the test R^2 has shown ~8% improvement. 
+
+# Model adequacy checks
+## Model 2
+
+To check the adequacy of the model, we will plot residuals vs. fitted values, to see if our assumptions about, linear relationship betweeen Y & X and constant variance of error terms hold. 
+```{r}
+par(mfrow=c(2,2))
+plot(lm.fit2)
+```
+
