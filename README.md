@@ -114,4 +114,16 @@ I have also included two other situations that might affect model accuracy. They
 
 ## Day 15 | [Multiple Linear Regression - Model assumptions and adequacy checks [R code]](https://github.com/NikhilSawal/100DaysOfMLCode/tree/master/multiple_linear_regression)  
 
-Today I performed model adequacy checks on our multiple regression problem and also tested the model for multicollinearity. From the output of our model it looks like, there is a minor but noticable violation of the assumptions and also there is multicollinearity. For more detailed explanation check the readme file by clicking the above link.
+Today I performed model adequacy checks on our multiple regression problem and also tested the model for multicollinearity. From the output of our model it looks like, there is a minor but noticable violation of the assumptions and also there is multicollinearity. For more detailed explanation check the readme file by clicking the above link.  
+
+## Day 16 | [Resampling Techniques](https://github.com/NikhilSawal/100DaysOfMLCode/blob/master/Images/Day_16.png)  
+
+For day 16, I have highlighted the resampling techniques, that give us a good understanding about the variability associated with our model of choice, by repeatedly drawing samples from a data set and refitting a model on each sample. These techniques include:  
+**Cross-validation:**  
+* Validation Set Approach
+* Leave-One-Out-Cross-Validation (LOOCV)
+* K-fold cross-validation  
+
+**Bootstrapping**
+
+![](Images/Day_16.png)  
