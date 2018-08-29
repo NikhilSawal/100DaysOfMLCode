@@ -20,7 +20,7 @@ lm.fit1 <- lm(medv~.-crim-indus-age, data = train)
 summary(lm.fit1)
 
 
-model_evaluation <- function(model){
+model_eval <- function(model, k){
   
   # Prediction
   predictions <- predict(model, test)
@@ -47,7 +47,13 @@ model_evaluation <- function(model){
   SST <- sum((results$Observed-mean(results$Observed))^2)
   
   r2 <- 1 - (SSRes/SST) 
-  return(list(mse, r2))
+  
+  #adjusted R^2
+  n <- nrow(test)
+  
+  adj.r2 <- 1 - ((SSRes/(n-k-1))/(SST/(n-1)))
+  
+  return(list(mse, r2, adj.r2))
   
 }
 
@@ -59,17 +65,30 @@ lm.fit2 <- lm(medv ~ crim + zn + chas + rm + ptratio + black + lstat +
                 indus*nox + indus*dis + indus*tax + nox*age + nox*dis + 
                 age*dis + rad*tax)
 
+summary(lm.fit2)
+
+# model lm.fit2 has a lot of insignificant terms
+# We will refit the model, using only significant terms
+lm.fit3 <- lm(medv ~ crim + chas + rm + ptratio + black + lstat + rad + tax +
+                indus:dis + indus:tax)
+
+summary(lm.fit3)
+
 # Model 0
-model_evaluation(lm.fit)
+model_eval(lm.fit, 13)
 
 # Model 1
-model_evaluation(lm.fit1)
+model_eval(lm.fit1, 10)
 
 # Model 2
-model_evaluation(lm.fit2)
+model_eval(lm.fit2, 20)
+
+# Model 3
+model_eval(lm.fit3, 10)
 
 # Model adequacy checks
 plot(lm.fit2)
 
 # Variance inflation factor
 vif(lm.fit2)
+vif(lm.fit3)
