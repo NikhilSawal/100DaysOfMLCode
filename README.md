@@ -127,3 +127,7 @@ For day 16, I have highlighted the resampling techniques, that give us a good un
 **Bootstrapping**
 
 ![](Images/Day_16.png)  
+
+## Day 17 | [Multiple Linear Regression - Model 3](https://github.com/NikhilSawal/100DaysOfMLCode/tree/master/multiple_linear_regression)  
+
+Today I added a new regression model, that is more efficient in terms of number predictor variables i.e uses far less predictors than the previous model and still possesses similar level of accuracy. I also updated the `model_eval()` function and now it incorporates the adjusted R^2 value as well, which is far more reliable than MSE & R^2, since these two measures of accuracy don't account for the number of predictors used to fit the model, but adjusted R^2 penalizes if more noise variables are included in the model. 
