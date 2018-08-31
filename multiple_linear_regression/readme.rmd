@@ -108,9 +108,11 @@ corrplot(M, method = "circle")
 From the above plot, we observe strong intractions like `indus*nox, indus*dis, indus*tax, nox*age, noc*dis, ade*dis, rad*tax`. We refit the model using the main effects and interaction and check the summary. 
 
 ```{r}
-lm.fit2 <- lm(medv ~ crim + zn + chas + rm + ptratio + black + lstat +
-                indus*nox + indus*dis + indus*tax + nox*age + nox*dis + 
-                age*dis + rad*tax)
+lm.fit2 <- lm(medv ~ crim + zn + indus + chas + nox + rm + age + dis + rad + tax + 
+                ptratio + black + lstat + indus*nox + indus*dis + indus*tax + nox*age + 
+                nox*dis + age*dis + rad*tax, data = train)
+
+
 summary(lm.fit2)
 ```
 There is very little difference between the R^2 value of this model and the previous model. Looking at the summary output, we can see that our model has a lot of predictors that are insignificant in predicting the response. We will fit a new model without these predictors and see how it performs. 
@@ -123,12 +125,12 @@ There is very little difference between the R^2 value of this model and the prev
 We should be cautious, while removing any predictor variables from our model. For example:
 
 * The interaction term `tax*rad` is insignificant in model `lm.fit2`, but the main effects, `rad` & `tax` are significant, so we just want to remove the interaction term, but preserve the main effects.
-* Also, the interaction term, `indus*tax` is significant, but the main effect `indus` is insignificant and the main effect `tax` is significant in model `lm.fit2`. Which means that, we want to retain the interaction term, `indus*tax` & the main effect `tax` but not `indus`. We do this by using the code `rad:tax` & **NOT** `rad*tax`. 
+* Also, the interaction term, `indus*dis` is significant, but the main effect `indus` & `dis` are insignificant in model `lm.fit2`. But as per the **`hierarchial principle`** we should add the main effects `indus` & `dis` to our model as well. 
 
 Now, we are ready to fit our new model.
 ```{r}
-lm.fit3 <- lm(medv ~ crim + chas + rm + ptratio + black + lstat + rad + tax +
-                indus:dis + indus:tax)
+lm.fit3 <- lm(medv ~ rm + ptratio + tax + rad + black + lstat +
+                indus*dis + indus*tax, data = train)
 
 summary(lm.fit3)
 ```
@@ -156,11 +158,11 @@ model_eval(lm.fit3, 10)
 
 Model 0 & Model 1 are very basic models, since they include only the main effects, which is evident from the values of their accuracy measure. Model 2 & Model 3, on the other hand, include the interaction terms and hence we will evaluate these models in great details.
 
-* Model 2 has 20 predictor variable and has (MSE, R^2, Adjusted R^2) values of (21.17966, 0.6922277, 0.6400629)
+* Model 2 has 20 predictor variable and has (MSE, R^2, Adjusted R^2) values of (23.25251, 0.662106, 0.6048358)
 * Model 3 has 10 predictor variable and has (MSE, R^2, Adjusted R^2) values of
-(23.06428, 0.6648412, 0.638657)
+(27.93388, 0.5940786, 0.562366)
 * Notice that, though Model 2 looks better than Model 3, in terms of values of 
-`(MSE, R^2, Adjusted R^2)`, for a reduction of 10 predictor variables from Model 2 -> Model 3, there is very little improvement in the values of `(MSE, R^2, Adjusted R^2)`. Infact, the values of `Adjusted R^2` for the two models are approximately the same (~64%). So Model 3 is way better than Model 2, since it uses half the predictors as compared to Model 2 and has comparable level of accuracy.
+`(MSE, R^2, Adjusted R^2)`, but for a reduction of 10 predictor variables from Model 2 -> Model 3, there is very little improvement in the values of `(MSE, R^2, Adjusted R^2)`. Infact, the difference between the `Adjusted R^2` values of the two models is just (3%). So Model 3 is way better than Model 2, since it uses half the predictors as compared to Model 2 and has comparable level of accuracy.
 
 We now move further and check the adequacy of our model.
 

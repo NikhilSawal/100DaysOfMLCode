@@ -59,18 +59,18 @@ model_eval <- function(model, k){
 
 # Interaction terms
 M <- cor(df)
-corrplot(M, method = "circle")
+corrplot(M, method = "number")
 
-lm.fit2 <- lm(medv ~ crim + zn + chas + rm + ptratio + black + lstat +
-                indus*nox + indus*dis + indus*tax + nox*age + nox*dis + 
-                age*dis + rad*tax)
+lm.fit2 <- lm(medv ~ crim + zn + indus + chas + nox + rm + age + dis + rad + tax + 
+                ptratio + black + lstat + indus*nox + indus*dis + indus*tax + nox*age + 
+                nox*dis + age*dis + rad*tax, data = train)
 
 summary(lm.fit2)
 
 # model lm.fit2 has a lot of insignificant terms
 # We will refit the model, using only significant terms
-lm.fit3 <- lm(medv ~ crim + chas + rm + ptratio + black + lstat + rad + tax +
-                indus:dis + indus:tax)
+lm.fit3 <- lm(medv ~ rm + ptratio + tax + rad + black + lstat +
+                indus*dis + indus*tax, data = train)
 
 summary(lm.fit3)
 
@@ -92,3 +92,6 @@ plot(lm.fit2)
 # Variance inflation factor
 vif(lm.fit2)
 vif(lm.fit3)
+
+
+
