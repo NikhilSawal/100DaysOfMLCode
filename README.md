@@ -130,4 +130,9 @@ For day 16, I have highlighted the resampling techniques, that give us a good un
 
 ## Day 17 | [Multiple Linear Regression - Model 3](https://github.com/NikhilSawal/100DaysOfMLCode/tree/master/multiple_linear_regression)  
 
-Today I added a new regression model, that is more efficient in terms of number predictor variables i.e uses far less predictors than the previous model and still possesses similar level of accuracy. I also updated the `model_eval()` function and now it incorporates the adjusted R^2 value as well, which is far more reliable than MSE & R^2, since these two measures of accuracy don't account for the number of predictors used to fit the model, but adjusted R^2 penalizes if more noise variables are included in the model. 
+Today I added a new regression model, that is more efficient in terms of number predictor variables i.e uses far less predictors than the previous model and still possesses similar level of accuracy. I also updated the `model_eval()` function and now it incorporates the adjusted R^2 value as well, which is far more reliable than MSE & R^2, since these two measures of accuracy don't account for the number of predictors used to fit the model, but adjusted R^2 penalizes if more noise variables are included in the model.   
+
+## Day 18 | [Multiple Linear Regression - Outlier detection & treatment | Summary table](https://github.com/NikhilSawal/100DaysOfMLCode/tree/master/multiple_linear_regression)  
+
+For day_18, I decided to continue regression analysis further and do outlier detection and treatment. Outlier detection and treatment is important since, outliers tend to pull the regression line towards themselves and can affect the accuracy of the model. I also added a summary table, that keeps count of all the models developed till date. 
+
