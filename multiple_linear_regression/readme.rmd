@@ -12,6 +12,7 @@ library(ISLR)
 library(caTools)
 library(corrplot)
 library(car)
+library(dplyr)
 
 df <- Boston
 attach(df)
@@ -27,7 +28,7 @@ test <- subset(df, split == F)
 
 ```
 
-## Model 1 [With all predictors]
+## Model 0 [With all predictors]
 Our first model of choice should be to include all variables and see how the model performs. Following lines of code will help us fit a model and dislplay the summary using the `summary()` function. The summary include estimates for our model coefficients i.e. all the `beta-hat's`, the standard error and the p-value based on t-statistic. It also outputs, values of the training R^2 and (adjusted R^2). We haven't talked about adjusted R^2 yet, but it's another and more reliable measure for checking model accuracy. The reason it is more reliable is that, unlike R^2, (adjusted R^2) penalizes if noise variables are added to the model, whereas R^2 keeps increasing as we add more variables to our model.
 ```{r}
 lm.fit <- lm(medv~., data = train)
@@ -35,7 +36,7 @@ summary(lm.fit)
 ```
 Looking at the p-values, it seems like variables `crim`, `indus` and `age` are not useful in predicting the response. So, we try to fit our second model excluding these variables.  
 
-## Model 2 [With only significant predictors]
+## Model 1 [With only significant predictors]
 ```{r}
 lm.fit1 <- lm(medv~.-crim-indus-age, data = train)
 summary(lm.fit1)
@@ -125,7 +126,7 @@ There is very little difference between the R^2 value of this model and the prev
 We should be cautious, while removing any predictor variables from our model. For example:
 
 * The interaction term `tax*rad` is insignificant in model `lm.fit2`, but the main effects, `rad` & `tax` are significant, so we just want to remove the interaction term, but preserve the main effects.
-* Also, the interaction term, `indus*dis` is significant, but the main effect `indus` & `dis` are insignificant in model `lm.fit2`. But as per the **`hierarchial principle`** we should add the main effects `indus` & `dis` to our model as well. 
+* Also, the interaction term, `indus*dis` is significant, but the main effect `indus` & `dis` are insignificant in model `lm.fit2`. But as per the **`hierarchial principle`**, which states that if the we include the interaction terms, we should include the main effects as well, even if the p-value associated with their coefficients is not significant. So, we should add the main effects `indus` & `dis` to our model as well. 
 
 Now, we are ready to fit our new model.
 ```{r}
@@ -162,7 +163,7 @@ Model 0 & Model 1 are very basic models, since they include only the main effect
 * Model 3 has 10 predictor variable and has (MSE, R^2, Adjusted R^2) values of
 (27.93388, 0.5940786, 0.562366)
 * Notice that, though Model 2 looks better than Model 3, in terms of values of 
-`(MSE, R^2, Adjusted R^2)`, but for a reduction of 10 predictor variables from Model 2 -> Model 3, there is very little improvement in the values of `(MSE, R^2, Adjusted R^2)`. Infact, the difference between the `Adjusted R^2` values of the two models is just (3%). So Model 3 is way better than Model 2, since it uses half the predictors as compared to Model 2 and has comparable level of accuracy.
+`(MSE, R^2, Adjusted R^2)`, but for a reduction of 10 predictor variables from Model 2 -> Model 3, there is very little improvement in the values of `(MSE, R^2, Adjusted R^2)`. Infact, the difference between the `Adjusted R^2` values of the two models is just (4%). So Model 3 is better than Model 2, in the sense that, it uses half the predictors as compared to Model 2 and has comparable level of accuracy.
 
 We now move further and check the adequacy of our model.
 
@@ -185,8 +186,41 @@ plot(lm.fit2)
 ```{r}
 par(mfrow=c(2,2))
 plot(lm.fit3)
+```   
+
+The violations look similar. Here we will have to perform some kind of transformations to correct these violations. Notice that all the plots above highlight few observaions as outliers. In the following section, we will go through a technique to deal with outliers.
+
+# Outlier detection & treatment
+As defined in our infographic of [Day 14](https://github.com/NikhilSawal/100DaysOfMLCode/blob/master/Images/Day_14.png), outliers are observations which are considerably different from the rest of the observations and tend to pull the regression line towards themselves. The **Residuals vs. Fitted values plot & the Normal probability plot** are particularly helpful in identifying outliers. From the plots in the previous section, we see that the observations `365, 369, 373 & 413` appear distinctly different from the rest of the data. So, we will fit our model 2 and model 3, based on a training set that excludes these observations. We accomplish this by using the following code. We use a package `dplyr` to use the `%in%` operator and `filter` function.
+```{r}
+train$id <- as.numeric(rownames(train))
+outliers <- c(365,369,373,413)
+train1 <- filter(train, !(id %in% outliers)) 
+```   
+From the above lines of code, we have a dataset, `train1` that does not include the unusual observations. Now we will fit model 2 and 3 with this new data set, and see if we get different values. We do this analysis, because clearly discarding the outliers can get trickier, since outliers can be unusual but perfectly plausible values. [] Deleting these values to improve the fit of the equation can be dangerous as it can give the user a false sense of precision.
+
+Now we fit model 2 & 3 without outliers and call them `lm.fit21` and `lm.fit31` respectively. Later we compare model 2 vs. model 21 & model 3 vs. model 31 and compare  the coefficient estimates (i.e the betas), MSE, R^2, Adj. R^2 and see if there is a difference. 
+
+## Model 2 w/o Outliers
+```{r}
+lm.fit21 <- lm(medv ~ crim + zn + indus + chas + nox + rm + age + dis + rad + tax + 
+                ptratio + black + lstat + indus*nox + indus*dis + indus*tax + nox*age + 
+                nox*dis + age*dis + rad*tax, data = train1)
+
+summary(lm.fit21)
+model_eval(lm.fit21, 20)
 ```
-The violations look similar. Here we will have to perform some kind of transformations to correct these violations.
+
+## Model 3 w/o Outliers
+```{r}
+lm.fit31 <- lm(medv ~ rm + ptratio + tax + rad + black + lstat +
+                indus*dis + indus*tax, data = train1)
+
+summary(lm.fit31)
+model_eval(lm.fit31, 10)
+```
+
+Comparing model 21 & 31 with model 2 & 3 resp. we see that there is not much of a change between the coefficient estimates of the models and our measures of model evaluation i.e MSE, R^2 & Adj. R^2 have infact deteriorated when we fit models 21 & 31 using the test set. **If it's too much of a hassle to go back & forth for the result, scroll down to the bottom of the page, where I have summarized all models & their outcomes, that we developed till now, in the form of a summary table.** So, we can infer that the observations are not outliers, but are a bit unusual and that they donot control the slope of the regression line and hence we donot exclude them during further analysis. Note that we compare model 2 vs. model 21 & model 3 vs. model 31.
 
 # Multicollinearity
 As we saw on day 14, we can use VIF to check if multicollinearity exists. Multicollinearity refers to a near-linear dependency between predictor variables and response. If there is multicollinearity in our model, **then there would be a large amount of variance in our predictor varibles and hence our predictions would change drastically for different data sets**. So, it's really important to check for multicollinearity. As noted in the infographic, multicollinearity exists if VIF > 5 or 10. We use the `vif()` function from the `car` library on our model.
@@ -201,3 +235,14 @@ vif(lm.fit2)
 vif(lm.fit3)
 ```
 From the above outputs, we can see that we have a lot of predictors with values >> 5 & 10 in Model 2, but Model 3 shows great improvements. Though there are a few terms in model 3, that are high in terms of multicollinearity, but its still better than Model 2. Later we will be using a technique called **Ridge regression** to deal with this problem. 
+
+# Summary of Models
+
+Model  | RSE | R^2 | Adj. R^2 | #Predictors | Model Description 
+------------- | ------------- | ------------- | ------------- | ------------- | -------------
+0  | 25.70  | 62.64%  | 58.76%  | 13 | Includes all predictors
+1  | 26.40  | 61.63%  | 58.63%  | 10 | Includes significant predictors from model 0
+2  | 23.25  | 66.21%  | 60.48%  | 20 | Includes main effects and significant interaction terms from the correlation plot
+3  | 27.93  | 59.40%  | 56.23%  | 10 | Includes significant predictors from model 2
+21  | 25.89  | 62.37%  | 55.99%  | 20 | Model 2 w/o outliers
+31  | 29.29  | 57.42%  | 54.10%  | 10 | Model 3 w/o outliers

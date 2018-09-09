@@ -3,6 +3,7 @@ library(ISLR)
 library(caTools)
 library(corrplot)
 library(car)
+library(dplyr)
 
 df <- Boston
 attach(df)
@@ -88,6 +89,27 @@ model_eval(lm.fit3, 10)
 
 # Model adequacy checks
 plot(lm.fit2)
+
+# Outlier treatment
+outliers <- c(365,369,373,413)
+train1 <- filter(train, !(id %in% outliers))
+train$id <- as.numeric(rownames(train))
+
+## Model 2 w/o Outliers
+lm.fit21 <- lm(medv ~ crim + zn + indus + chas + nox + rm + age + dis + rad + tax + 
+                ptratio + black + lstat + indus*nox + indus*dis + indus*tax + nox*age + 
+                nox*dis + age*dis + rad*tax, data = train1)
+
+summary(lm.fit21)
+model_eval(lm.fit21, 20)
+
+## Model 3 w/o Outliers
+lm.fit31 <- lm(medv ~ rm + ptratio + tax + rad + black + lstat +
+                indus*dis + indus*tax, data = train1)
+
+summary(lm.fit31)
+model_eval(lm.fit31, 10)
+
 
 # Variance inflation factor
 vif(lm.fit2)

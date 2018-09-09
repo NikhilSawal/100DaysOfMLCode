@@ -12,6 +12,7 @@ library(ISLR)
 library(caTools)
 library(corrplot)
 library(car)
+library(dplyr)
 
 df <- Boston
 attach(df)
@@ -27,7 +28,7 @@ train <- subset(df, split == T)
 test <- subset(df, split == F)
 ```
 
-Model 1 \[With all predictors\]
+Model 0 \[With all predictors\]
 -------------------------------
 
 Our first model of choice should be to include all variables and see how the model performs. Following lines of code will help us fit a model and dislplay the summary using the `summary()` function. The summary include estimates for our model coefficients i.e. all the `beta-hat's`, the standard error and the p-value based on t-statistic. It also outputs, values of the training R^2 and (adjusted R^2). We haven't talked about adjusted R^2 yet, but it's another and more reliable measure for checking model accuracy. The reason it is more reliable is that, unlike R^2, (adjusted R^2) penalizes if noise variables are added to the model, whereas R^2 keeps increasing as we add more variables to our model.
@@ -70,7 +71,7 @@ summary(lm.fit)
 
 Looking at the p-values, it seems like variables `crim`, `indus` and `age` are not useful in predicting the response. So, we try to fit our second model excluding these variables.
 
-Model 2 \[With only significant predictors\]
+Model 1 \[With only significant predictors\]
 --------------------------------------------
 
 ``` r
@@ -236,7 +237,7 @@ There is very little difference between the R^2 value of this model and the prev
 We should be cautious, while removing any predictor variables from our model. For example:
 
 -   The interaction term `tax*rad` is insignificant in model `lm.fit2`, but the main effects, `rad` & `tax` are significant, so we just want to remove the interaction term, but preserve the main effects.
--   Also, the interaction term, `indus*dis` is significant, but the main effect `indus` & `dis` are insignificant in model `lm.fit2`. But as per the **`hierarchial principle`** we should add the main effects `indus` & `dis` to our model as well.
+-   Also, the interaction term, `indus*dis` is significant, but the main effect `indus` & `dis` are insignificant in model `lm.fit2`. But as per the **`hierarchial principle`**, which states that if the we include the interaction terms, we should include the main effects as well, even if the p-value associated with their coefficients is not significant. So, we should add the main effects `indus` & `dis` to our model as well.
 
 Now, we are ready to fit our new model.
 
@@ -347,7 +348,7 @@ Model 0 & Model 1 are very basic models, since they include only the main effect
 
 -   Model 2 has 20 predictor variable and has (MSE, R^2, Adjusted R^2) values of (23.25251, 0.662106, 0.6048358)
 -   Model 3 has 10 predictor variable and has (MSE, R^2, Adjusted R^2) values of (27.93388, 0.5940786, 0.562366)
--   Notice that, though Model 2 looks better than Model 3, in terms of values of `(MSE, R^2, Adjusted R^2)`, but for a reduction of 10 predictor variables from Model 2 -&gt; Model 3, there is very little improvement in the values of `(MSE, R^2, Adjusted R^2)`. Infact, the difference between the `Adjusted R^2` values of the two models is just (3%). So Model 3 is way better than Model 2, since it uses half the predictors as compared to Model 2 and has comparable level of accuracy.
+-   Notice that, though Model 2 looks better than Model 3, in terms of values of `(MSE, R^2, Adjusted R^2)`, but for a reduction of 10 predictor variables from Model 2 -&gt; Model 3, there is very little improvement in the values of `(MSE, R^2, Adjusted R^2)`. Infact, the difference between the `Adjusted R^2` values of the two models is just (4%). So Model 3 is better than Model 2, in the sense that, it uses half the predictors as compared to Model 2 and has comparable level of accuracy.
 
 We now move further and check the adequacy of our model.
 
@@ -378,7 +379,143 @@ par(mfrow=c(2,2))
 plot(lm.fit3)
 ```
 
-![](readme_files/figure-markdown_github/unnamed-chunk-14-1.png) The violations look similar. Here we will have to perform some kind of transformations to correct these violations.
+![](readme_files/figure-markdown_github/unnamed-chunk-14-1.png)
+
+The violations look similar. Here we will have to perform some kind of transformations to correct these violations. Notice that all the plots above highlight few observaions as outliers. In the following section, we will go through a technique to deal with outliers.
+
+Outlier treatment
+=================
+
+As defined in our infographic of [Day 14](https://github.com/NikhilSawal/100DaysOfMLCode/blob/master/Images/Day_14.png), outliers are observations which are considerably different from the rest of the observations and tend to pull the regression line towards themselves. The **Residuals vs. Fitted values plots & the Normal probability plots** are particularly helpful in identifying outliers. From the plots in the previous section, we see that the observations `365, 369, 373 & 413` appear distinctly different from the rest of the data. So, we will fit our model 2 and model 3, based on a training set that excludes these values. We accomplish this by using the following code. We use a package `dplyr` to use the `%in%` operator and `filter` function.
+
+``` r
+train$id <- as.numeric(rownames(train))
+outliers <- c(365,369,373,413)
+train1 <- filter(train, !(id %in% outliers)) 
+```
+
+From the above lines of code, we have a dataset, `train1` that does not include the unusual observations. Now we will fit model 2 and 3 with this new data set, and see if we get different values. We do this analysis, because clearly discarding the outliers can get trickier, since outliers can be unusual but perfectly plausible values. \[\] Deleting these values to improve the fit of the equation can be dangerous as it can give the user a false sense of precision.
+
+Now we fit model 2 & 3 without outliers and call them `lm.fit21` and `lm.fit31` respectively. Later we compare model 2 vs. model 21 & model 3 vs. model 31 and compare the values the coefficient estimates (i.e the betas), MSE, R^2, Adj. R^2 and see if there is a difference.
+
+Model 2 w/o Outliers
+--------------------
+
+``` r
+lm.fit21 <- lm(medv ~ crim + zn + indus + chas + nox + rm + age + dis + rad + tax + 
+                ptratio + black + lstat + indus*nox + indus*dis + indus*tax + nox*age + 
+                nox*dis + age*dis + rad*tax, data = train1)
+
+summary(lm.fit21)
+```
+
+    ## 
+    ## Call:
+    ## lm(formula = medv ~ crim + zn + indus + chas + nox + rm + age + 
+    ##     dis + rad + tax + ptratio + black + lstat + indus * nox + 
+    ##     indus * dis + indus * tax + nox * age + nox * dis + age * 
+    ##     dis + rad * tax, data = train1)
+    ## 
+    ## Residuals:
+    ##      Min       1Q   Median       3Q      Max 
+    ## -11.6348  -2.3691  -0.3507   1.7609  18.9269 
+    ## 
+    ## Coefficients:
+    ##               Estimate Std. Error t value Pr(>|t|)    
+    ## (Intercept)  0.7630558 11.9946880   0.064  0.94931    
+    ## crim        -0.0471877  0.0537281  -0.878  0.38041    
+    ## zn           0.0135196  0.0163817   0.825  0.40978    
+    ## indus        0.2222432  0.5117246   0.434  0.66434    
+    ## chas         1.5084783  0.8968749   1.682  0.09350 .  
+    ## nox         22.5515083 20.9019624   1.079  0.28138    
+    ## rm           5.8542940  0.4316915  13.561  < 2e-16 ***
+    ## age          0.1659729  0.1363609   1.217  0.22438    
+    ## dis          0.9939310  1.4099529   0.705  0.48133    
+    ## rad          0.4758268  0.2865858   1.660  0.09776 .  
+    ## tax         -0.0256131  0.0060953  -4.202 3.38e-05 ***
+    ## ptratio     -0.8614445  0.1355027  -6.357 6.56e-10 ***
+    ## black        0.0134506  0.0026755   5.027 8.04e-07 ***
+    ## lstat       -0.3882566  0.0539203  -7.201 3.84e-12 ***
+    ## indus:nox   -0.3025652  0.7629932  -0.397  0.69195    
+    ## indus:dis   -0.0945479  0.0474525  -1.992  0.04711 *  
+    ## indus:tax    0.0007762  0.0002979   2.606  0.00957 ** 
+    ## nox:age     -0.3383505  0.2192836  -1.543  0.12376    
+    ## nox:dis     -2.9128712  3.2773437  -0.889  0.37474    
+    ## age:dis     -0.0058680  0.0087053  -0.674  0.50072    
+    ## rad:tax     -0.0003711  0.0004308  -0.861  0.38966    
+    ## ---
+    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+    ## 
+    ## Residual standard error: 3.905 on 342 degrees of freedom
+    ## Multiple R-squared:  0.8339, Adjusted R-squared:  0.8242 
+    ## F-statistic: 85.84 on 20 and 342 DF,  p-value: < 2.2e-16
+
+``` r
+model_eval(lm.fit21, 20)
+```
+
+    ## [[1]]
+    ## [1] 25.89488
+    ## 
+    ## [[2]]
+    ## [1] 0.6237084
+    ## 
+    ## [[3]]
+    ## [1] 0.5599302
+
+Model 3 w/o Outliers
+--------------------
+
+``` r
+lm.fit31 <- lm(medv ~ rm + ptratio + tax + rad + black + lstat +
+                indus*dis + indus*tax, data = train1)
+
+summary(lm.fit31)
+```
+
+    ## 
+    ## Call:
+    ## lm(formula = medv ~ rm + ptratio + tax + rad + black + lstat + 
+    ##     indus * dis + indus * tax, data = train1)
+    ## 
+    ## Residuals:
+    ##      Min       1Q   Median       3Q      Max 
+    ## -12.1407  -2.3943  -0.4701   1.8378  20.8898 
+    ## 
+    ## Coefficients:
+    ##               Estimate Std. Error t value Pr(>|t|)    
+    ## (Intercept) 10.2892042  4.7538606   2.164  0.03111 *  
+    ## rm           5.8180103  0.4245663  13.703  < 2e-16 ***
+    ## ptratio     -0.7672372  0.1161206  -6.607 1.45e-10 ***
+    ## tax         -0.0266066  0.0060322  -4.411 1.37e-05 ***
+    ## rad          0.1750978  0.0639482   2.738  0.00649 ** 
+    ## black        0.0145986  0.0026739   5.460 9.02e-08 ***
+    ## lstat       -0.4698829  0.0511155  -9.193  < 2e-16 ***
+    ## indus       -0.1069248  0.1429759  -0.748  0.45505    
+    ## dis         -0.2759046  0.1901620  -1.451  0.14770    
+    ## indus:dis   -0.0637656  0.0259823  -2.454  0.01460 *  
+    ## tax:indus    0.0007552  0.0003035   2.488  0.01329 *  
+    ## ---
+    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+    ## 
+    ## Residual standard error: 4.053 on 352 degrees of freedom
+    ## Multiple R-squared:  0.8158, Adjusted R-squared:  0.8106 
+    ## F-statistic: 155.9 on 10 and 352 DF,  p-value: < 2.2e-16
+
+``` r
+model_eval(lm.fit31, 10)
+```
+
+    ## [[1]]
+    ## [1] 29.29638
+    ## 
+    ## [[2]]
+    ## [1] 0.5742794
+    ## 
+    ## [[3]]
+    ## [1] 0.54102
+
+Comparing model 21 & 31 with model 2 & 3 resp. we see that there in not much of a change between the coefficient estimates of the models and our measures of model evaluation i.e MSE, R^2 & Adj. R^2 have infact deteriorated when we fit models 21 & 31 using the test set. **If it's too much of a hassle to go back & forth for the result, scroll down to the bottom of the page, where I have summarized all models & their outcomes, we developed till now, in the form of a summary table.** So, we can infer that the observations are not outliers but are a bit unusual and that they donot control the slope of the regression line and hence we donot exclude them during further analysis.
 
 Multicollinearity
 =================
@@ -414,3 +551,77 @@ vif(lm.fit3)
     ##  3.587770  3.158612 46.495586
 
 From the above outputs, we can see that we have a lot of predictors with values &gt;&gt; 5 & 10 in Model 2, but Model 3 shows great improvements. Though there are a few terms in model 3, that are high in terms of multicollinearity, but its still better than Model 2. Later we will be using a technique called **Ridge regression** to deal with this problem.
+
+Summary of Models
+=================
+
+<table style="width:100%;">
+<colgroup>
+<col width="16%" />
+<col width="16%" />
+<col width="16%" />
+<col width="16%" />
+<col width="16%" />
+<col width="16%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Model</th>
+<th>RSE</th>
+<th>R^2</th>
+<th>Adj. R^2</th>
+<th>#Predictors</th>
+<th>Model Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>0</td>
+<td>25.70</td>
+<td>62.64%</td>
+<td>58.76%</td>
+<td>13</td>
+<td>Includes all predictors</td>
+</tr>
+<tr class="even">
+<td>1</td>
+<td>26.40</td>
+<td>61.63%</td>
+<td>58.63%</td>
+<td>10</td>
+<td>Includes significant predictors from model 0</td>
+</tr>
+<tr class="odd">
+<td>2</td>
+<td>23.25</td>
+<td>66.21%</td>
+<td>60.48%</td>
+<td>20</td>
+<td>Includes main effects and significant interaction terms from the correlation plot</td>
+</tr>
+<tr class="even">
+<td>3</td>
+<td>27.93</td>
+<td>59.40%</td>
+<td>56.23%</td>
+<td>10</td>
+<td>Includes significant predictors from model 2</td>
+</tr>
+<tr class="odd">
+<td>21</td>
+<td>25.89</td>
+<td>62.37%</td>
+<td>55.99%</td>
+<td>20</td>
+<td>Model 2 w/o outliers</td>
+</tr>
+<tr class="even">
+<td>31</td>
+<td>29.29</td>
+<td>57.42%</td>
+<td>54.10%</td>
+<td>10</td>
+<td>Model 3 w/o outliers</td>
+</tr>
+</tbody>
+</table>
