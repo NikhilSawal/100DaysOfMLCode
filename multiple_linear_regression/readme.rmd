@@ -13,6 +13,7 @@ library(caTools)
 library(corrplot)
 library(car)
 library(dplyr)
+library(boot)
 
 df <- Boston
 attach(df)
@@ -221,6 +222,29 @@ model_eval(lm.fit31, 10)
 ```
 
 Comparing model 21 & 31 with model 2 & 3 resp. we see that there is not much of a change between the coefficient estimates of the models and our measures of model evaluation i.e MSE, R^2 & Adj. R^2 have infact deteriorated when we fit models 21 & 31 using the test set. **If it's too much of a hassle to go back & forth for the result, scroll down to the bottom of the page, where I have summarized all models & their outcomes, that we developed till now, in the form of a summary table.** So, we can infer that the observations are not outliers, but are a bit unusual and that they donot control the slope of the regression line and hence we donot exclude them during further analysis. Note that we compare model 2 vs. model 21 & model 3 vs. model 31.
+
+# K-fold cross-validation
+```{r}
+glm.fit2 <- glm(medv ~ crim + zn + indus + chas + nox + rm + age + dis + rad + tax + 
+                 ptratio + black + lstat + indus*nox + indus*dis + indus*tax + nox*age + 
+                 nox*dis + age*dis + rad*tax, data = train)
+
+glm.fit3 <- glm(medv ~ rm + ptratio + tax + rad + black + lstat +
+                   indus*dis + indus*tax, data = train)
+
+
+kfoldCV <- function(model, folds){
+  set.seed(101)
+  cv.error.10 <- rep(0,folds)
+  for(i in 1:length(cv.error.10)){
+    cv.error.10[i] <- cv.glm(train, model, K = folds)$delta[1]
+  }
+  return(cv.error.10)
+}
+
+kfoldCV(glm.fit2, 5)
+kfoldCV(glm.fit3, 5)
+```
 
 # Multicollinearity
 As we saw on day 14, we can use VIF to check if multicollinearity exists. Multicollinearity refers to a near-linear dependency between predictor variables and response. If there is multicollinearity in our model, **then there would be a large amount of variance in our predictor varibles and hence our predictions would change drastically for different data sets**. So, it's really important to check for multicollinearity. As noted in the infographic, multicollinearity exists if VIF > 5 or 10. We use the `vif()` function from the `car` library on our model.

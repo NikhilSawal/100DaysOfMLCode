@@ -13,6 +13,7 @@ library(caTools)
 library(corrplot)
 library(car)
 library(dplyr)
+library(boot)
 
 df <- Boston
 attach(df)
@@ -383,10 +384,10 @@ plot(lm.fit3)
 
 The violations look similar. Here we will have to perform some kind of transformations to correct these violations. Notice that all the plots above highlight few observaions as outliers. In the following section, we will go through a technique to deal with outliers.
 
-Outlier treatment
-=================
+Outlier detection & treatment
+=============================
 
-As defined in our infographic of [Day 14](https://github.com/NikhilSawal/100DaysOfMLCode/blob/master/Images/Day_14.png), outliers are observations which are considerably different from the rest of the observations and tend to pull the regression line towards themselves. The **Residuals vs. Fitted values plots & the Normal probability plots** are particularly helpful in identifying outliers. From the plots in the previous section, we see that the observations `365, 369, 373 & 413` appear distinctly different from the rest of the data. So, we will fit our model 2 and model 3, based on a training set that excludes these values. We accomplish this by using the following code. We use a package `dplyr` to use the `%in%` operator and `filter` function.
+As defined in our infographic of [Day 14](https://github.com/NikhilSawal/100DaysOfMLCode/blob/master/Images/Day_14.png), outliers are observations which are considerably different from the rest of the observations and tend to pull the regression line towards themselves. The **Residuals vs. Fitted values plot & the Normal probability plot** are particularly helpful in identifying outliers. From the plots in the previous section, we see that the observations `365, 369, 373 & 413` appear distinctly different from the rest of the data. So, we will fit our model 2 and model 3, based on a training set that excludes these observations. We accomplish this by using the following code. We use a package `dplyr` to use the `%in%` operator and `filter` function.
 
 ``` r
 train$id <- as.numeric(rownames(train))
@@ -396,7 +397,7 @@ train1 <- filter(train, !(id %in% outliers))
 
 From the above lines of code, we have a dataset, `train1` that does not include the unusual observations. Now we will fit model 2 and 3 with this new data set, and see if we get different values. We do this analysis, because clearly discarding the outliers can get trickier, since outliers can be unusual but perfectly plausible values. \[\] Deleting these values to improve the fit of the equation can be dangerous as it can give the user a false sense of precision.
 
-Now we fit model 2 & 3 without outliers and call them `lm.fit21` and `lm.fit31` respectively. Later we compare model 2 vs. model 21 & model 3 vs. model 31 and compare the values the coefficient estimates (i.e the betas), MSE, R^2, Adj. R^2 and see if there is a difference.
+Now we fit model 2 & 3 without outliers and call them `lm.fit21` and `lm.fit31` respectively. Later we compare model 2 vs. model 21 & model 3 vs. model 31 and compare the coefficient estimates (i.e the betas), MSE, R^2, Adj. R^2 and see if there is a difference.
 
 Model 2 w/o Outliers
 --------------------
@@ -515,7 +516,39 @@ model_eval(lm.fit31, 10)
     ## [[3]]
     ## [1] 0.54102
 
-Comparing model 21 & 31 with model 2 & 3 resp. we see that there in not much of a change between the coefficient estimates of the models and our measures of model evaluation i.e MSE, R^2 & Adj. R^2 have infact deteriorated when we fit models 21 & 31 using the test set. **If it's too much of a hassle to go back & forth for the result, scroll down to the bottom of the page, where I have summarized all models & their outcomes, we developed till now, in the form of a summary table.** So, we can infer that the observations are not outliers but are a bit unusual and that they donot control the slope of the regression line and hence we donot exclude them during further analysis.
+Comparing model 21 & 31 with model 2 & 3 resp. we see that there is not much of a change between the coefficient estimates of the models and our measures of model evaluation i.e MSE, R^2 & Adj. R^2 have infact deteriorated when we fit models 21 & 31 using the test set. **If it's too much of a hassle to go back & forth for the result, scroll down to the bottom of the page, where I have summarized all models & their outcomes, that we developed till now, in the form of a summary table.** So, we can infer that the observations are not outliers, but are a bit unusual and that they donot control the slope of the regression line and hence we donot exclude them during further analysis. Note that we compare model 2 vs. model 21 & model 3 vs. model 31.
+
+K-fold cross-validation
+=======================
+
+``` r
+glm.fit2 <- glm(medv ~ crim + zn + indus + chas + nox + rm + age + dis + rad + tax + 
+                 ptratio + black + lstat + indus*nox + indus*dis + indus*tax + nox*age + 
+                 nox*dis + age*dis + rad*tax, data = train)
+
+glm.fit3 <- glm(medv ~ rm + ptratio + tax + rad + black + lstat +
+                   indus*dis + indus*tax, data = train)
+
+
+kfoldCV <- function(model, folds){
+  set.seed(101)
+  cv.error.10 <- rep(0,folds)
+  for(i in 1:length(cv.error.10)){
+    cv.error.10[i] <- cv.glm(train, model, K = folds)$delta[1]
+  }
+  return(cv.error.10)
+}
+
+kfoldCV(glm.fit2, 5)
+```
+
+    ## [1] 22.55981 23.76408 21.45599 22.65141 23.57509
+
+``` r
+kfoldCV(glm.fit3, 5)
+```
+
+    ## [1] 23.29229 24.47247 23.22559 23.70225 24.36186
 
 Multicollinearity
 =================

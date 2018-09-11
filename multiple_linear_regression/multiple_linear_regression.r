@@ -4,6 +4,8 @@ library(caTools)
 library(corrplot)
 library(car)
 library(dplyr)
+library(caret)
+library(boot)
 
 df <- Boston
 attach(df)
@@ -115,5 +117,23 @@ model_eval(lm.fit31, 10)
 vif(lm.fit2)
 vif(lm.fit3)
 
+# K-fold cross-validation
+glm.fit2 <- glm(medv ~ crim + zn + indus + chas + nox + rm + age + dis + rad + tax + 
+                 ptratio + black + lstat + indus*nox + indus*dis + indus*tax + nox*age + 
+                 nox*dis + age*dis + rad*tax, data = train)
+
+glm.fit3 <- glm(medv ~ rm + ptratio + tax + rad + black + lstat +
+                   indus*dis + indus*tax, data = train)
 
 
+kfoldCV <- function(model, folds){
+  set.seed(101)
+  cv.error.10 <- rep(0,folds)
+  for(i in 1:length(cv.error.10)){
+    cv.error.10[i] <- cv.glm(train, model, K = folds)$delta[1]
+  }
+  return(cv.error.10)
+}
+
+kfoldCV(glm.fit2, 5)
+kfoldCV(glm.fit3, 5)
