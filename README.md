@@ -136,3 +136,7 @@ Today I added a new regression model, that is more efficient in terms of number 
 
 For day_18, I decided to continue regression analysis further and do outlier detection and treatment. Outlier detection and treatment is important since, outliers tend to pull the regression line towards themselves and can affect the accuracy of the model. I also added a summary table, that keeps count of all the models developed till date. 
 
+## Day 19 | [Multiple Linear Regression - K-fold cross-validation](https://github.com/NikhilSawal/100DaysOfMLCode/tree/master/multiple_linear_regression)  
+
+For day_19, I added code for performing k-fold cross-validation
+
